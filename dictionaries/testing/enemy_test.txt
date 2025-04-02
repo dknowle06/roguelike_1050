@@ -1,0 +1,11 @@
+{
+    name:"Test Enemy"
+    description:"This is a description."
+    defense:1
+    attack:1
+    special_defense:1
+    special_attack:1
+    hp:1
+    exp_dropped:1
+    gold_dropped:1
+}
