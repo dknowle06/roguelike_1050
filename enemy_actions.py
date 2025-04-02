@@ -22,14 +22,32 @@ class Enemy_Action:
 
     # healing and damage are self explanatory
     # *args contains all the stat boosts that will be added to the `stat_boosts` dictionary
-    def __init__(self, healing:float, damage:float, *args:float):
+    # *args should be of type `Stat_Boost`
+    def __init__(self, healing:float, damage:float, *args):
         self.healing = healing
         self.damage = damage
 
         self.stat_boosts = {}
         
         for arg in args:
-            self.stat_boosts
+            # using the type casts i define in `Stat_Boost` here instead of normal getters or setters
+            # probably not as clear in the code for what it does but it's a little more concise i think 
+            self.stat_boosts[str(arg)] = float(arg)
 
 
-ENEMY_ACTIONS_DICT = {}
+# FUNCTION SECTION
+# all functions should be defined as:
+"""
+def foo(stats_dict:dict):
+    \*math stuff here\*
+    return `Enemy_Action`
+"""
+
+
+def flop(stats_dict:dict):
+    return Enemy_Action(0, 1)
+
+# FUNCTION DICTIONARY
+ENEMY_ACTIONS_DICT = {
+    "flop":flop
+}
