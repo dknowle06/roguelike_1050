@@ -1,4 +1,7 @@
 """
+David Knowles
+4/2/2025
+
 Contains functions that return `Enemy_Action` objects
 These objects contain information about stat boosts, healing, damage, etc. 
 
