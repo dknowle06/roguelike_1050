@@ -1,4 +1,7 @@
 """
+David Knowles
+4/2/2025
+
 Contains functions that parse a text file into a dictionary
 First element will always be a string
 Second elements will try and parse into a float, int, or string

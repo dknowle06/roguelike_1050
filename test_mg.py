@@ -1,3 +1,7 @@
+# David Knowles
+# 4/2/2025
+# testing for map generation
+
 import mapgeneration
 
 # executes code only inside of this `if` statement

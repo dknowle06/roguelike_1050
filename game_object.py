@@ -1,3 +1,5 @@
+# David Knowles
+# 4/2/2025
 # stores parent class for game objects
 # stores classes for enemies and items 
 

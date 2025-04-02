@@ -1,9 +1,14 @@
 """
+David Knowles
+4/2/2025
+
 Two Classes that are used to create a Tree, since Python apparently doesn't have built in support?
 My implementation allows any node to have an unlimited number of parents and an unlimited number of children
 This could create some funky looking tree maps, but it will be useful for my game
 I think more accurately this would be described as a graph, but I'm not sure if that's accurate either
 IDK I just made a data structure that works for what I need
+
+----- essentially, i think i just made a graph that only lets you move forward?
 
 When iterating through this data structure, you can only go forward
 
