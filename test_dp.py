@@ -7,16 +7,10 @@ from game_object import Enemy
 from game_object import Item
 
 if __name__ == "__main__":
-    a = dict_parser("dictionaries/testing/enemy_test.txt", clean_key = True)
+    enemies = dict_parser("dictionaries/enemies.txt", ":", True)
 
-    enemy_test = Enemy(a[0])
+    magical_carp = Enemy(enemies[0])
 
-    print(enemy_test)
+    print(magical_carp)
 
-    print("\n")
-
-    b = dict_parser("dictionaries/testing/item_test.txt", clean_key = True)
-
-    item_test = Item(b[0])
-
-    print(item_test)
+    print(magical_carp.attack()(magical_carp.stats,magical_carp.name))

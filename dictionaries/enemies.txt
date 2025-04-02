@@ -1,0 +1,12 @@
+{
+    name:"Magical Carp"
+    description:"The only magical thing about this carp is that it can breathe on land."
+    defense:1
+    attack:1
+    special_defense:1
+    special_attack:1
+    hp:10
+    exp_dropped:5
+    gold_dropped:3
+    attacks:"flop"
+}
