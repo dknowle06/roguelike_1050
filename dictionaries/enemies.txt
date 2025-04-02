@@ -8,5 +8,5 @@
     hp:10
     exp_dropped:5
     gold_dropped:3
-    attacks:"flop"
+    attacks:"flop,cough"
 }

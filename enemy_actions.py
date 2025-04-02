@@ -30,11 +30,11 @@ class Enemy_Action:
         output_str = f"{self.enemy_name} {self.attack_verb}!\n"
 
         if self.damage != 0:
-            output_str += f"{self.enemy_name} hit you for {self.damage} damage." if self.damage > 0 else f"{self.enemy_name} healed you for {self.damage} hp."
+            output_str += f"{self.enemy_name} hit you for {self.damage} damage." if self.damage > 0 else f"{self.enemy_name} healed you for {-1 * self.damage} hp."
             output_str += "\n"
 
         if self.healing != 0:
-            output_str += f"{self.enemy_name} healed itself for {self.healing} hp." if self.healing > 0 else f"{self.enemy_name} dealt {self.damage} to itself."
+            output_str += f"{self.enemy_name} healed itself for {self.healing} hp." if self.healing > 0 else f"{self.enemy_name} dealt {-1 * self.healing} damage to itself."
             output_str += "\n"
 
         return output_str[:-1]
@@ -54,7 +54,11 @@ def foo(stats_dict:dict, enemy_name:str):
 def flop(stats_dict:dict, enemy_name:str):
     return Enemy_Action(0, 1, enemy_name, "flopped around")
 
+def cough(stats_dict:dict, enemy_name:str):
+    return Enemy_Action(-1, 0, enemy_name, "coughed")
+
 # FUNCTION DICTIONARY
 ENEMY_ACTIONS_DICT = {
-    "flop":flop
+    "flop":flop,
+    "cough":cough
 }
