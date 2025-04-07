@@ -1,0 +1,7 @@
+{
+    defense:1
+    attack:1
+    special_defense:1
+    special_attack:1
+    hp:20
+}
