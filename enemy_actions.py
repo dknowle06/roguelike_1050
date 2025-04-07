@@ -77,25 +77,20 @@ class Enemy_Action:
         # but if these aren't defined in the dictionaries passed, there is a major issue happening somewhere else
         # essentially, not this function's problem!!!
         player_defense = player_stats["Defense"]
-        enemy_attack = enemy_stats["Attack"]
-
         player_sp_defense = player_stats["Special Defense"]
-        enemy_sp_attack = enemy_stats["Special Attack"]
 
         # ends the function execution if the enemy is actually healing the player, or if the enemy deals no damage
         if self.damage <= 0:
             return None
 
-        # increase damage based on enemy damage stat, and then decrease it based on player defensive stat
+        # decrease damage based on player defense stat
 
         # don't modify piercing damage!! 
 
         if self.damage_type == PHYSICAL:
-            self.damage = self.damage * (enemy_attack + 100) / 100
             self.damage = self.damage / ((player_defense + 100) / 100)
 
-        elif self.damage_type = SPECIAL:
-            self.damage = self.damage * (enemy_sp_attack + 100) / 100
+        elif self.damage_type == SPECIAL:
             self.damage = self.damage / ((player_sp_defense + 100) / 100)
 
 
@@ -115,10 +110,14 @@ def flop(stats_dict:dict, enemy_name:str):
     return Enemy_Action(0, 1, enemy_name, "flopped around", PHYSICAL)
 
 def cough(stats_dict:dict, enemy_name:str):
-    return Enemy_Action(-1, 0, enemy_name, "coughed", PHYSICAL)
+    return Enemy_Action(-2, 0, enemy_name, "coughed", PHYSICAL)
+
+def sneeze(stats_dict:dict, enemy_name:str):
+    return Enemy_Action(-1, 1, enemy_name, "sneezed", PIERCING)
 
 # FUNCTION DICTIONARY
 ENEMY_ACTIONS_DICT = {
     "flop":flop,
-    "cough":cough
+    "cough":cough,
+    "sneeze":sneeze
 }

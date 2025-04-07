@@ -1,7 +1,7 @@
 {
-    defense:1
-    attack:1
-    special_defense:1
-    special_attack:1
-    hp:20
+    defense:1.0
+    attack:1.0
+    special_defense:1.0
+    special_attack:1.0
+    hp:20.0
 }
