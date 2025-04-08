@@ -1,5 +1,5 @@
 # David Knowles
-# 4/2/2025
+# 4/8/2025
 # testing for dictionary parsing and initializing game objects
 
 from dict_parser import dict_parser
@@ -9,8 +9,8 @@ from game_object import Item
 if __name__ == "__main__":
     enemies = dict_parser("dictionaries/enemies.txt", ":", True)
 
-    magical_carp = Enemy(enemies[0])
+    test_enemy = Enemy(enemies[1])
 
-    print(magical_carp)
+    print(test_enemy)
 
-    print(magical_carp.attack()(magical_carp.stats,magical_carp.name))
+    print(test_enemy.attack()(test_enemy.stats,test_enemy.name))

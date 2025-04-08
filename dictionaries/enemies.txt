@@ -10,3 +10,15 @@
     gold_dropped:3
     attacks:"flop,cough,sneeze"
 }
+{
+    name:"Slime"
+    description:""
+    defense:4.0
+    attack:15.0
+    special_defense:1.5
+    special_attack:1.0
+    hp:13.0
+    exp_dropped:10
+    gold_dropped:5
+    attacks:"bash"
+}

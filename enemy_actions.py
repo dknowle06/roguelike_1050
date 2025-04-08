@@ -1,6 +1,6 @@
 """
 David Knowles
-4/7/2025
+4/8/2025
 
 Contains functions that return `Enemy_Action` objects
 These objects contain information about stat boosts, healing, damage, etc. 
@@ -115,9 +115,16 @@ def cough(stats_dict:dict, enemy_name:str):
 def sneeze(stats_dict:dict, enemy_name:str):
     return Enemy_Action(-1, 1, enemy_name, "sneezed", PIERCING)
 
+def bash_attack(stats_dict:dict, enemy_name:str):
+    enemy_attack = stats_dict["Attack"]
+
+    damage = 3 * (enemy_attack + 100) / 100
+    return Enemy_Action(0, damage, enemy_name, "bashed you", PHYSICAL)
+
 # FUNCTION DICTIONARY
 ENEMY_ACTIONS_DICT = {
     "flop":flop,
     "cough":cough,
-    "sneeze":sneeze
+    "sneeze":sneeze,
+    "bash":bash_attack
 }
