@@ -1,13 +1,12 @@
 # David Knowles
-# 4/2/2025
+# 4/9/2025
 # testing for map generation
 
-import mapgeneration
+from mapgeneration import *
 
 # executes code only inside of this `if` statement
 if __name__ == "__main__":
-    mapgeneration.set_seed(5)
+    Encounter.load_object_data()
 
-    my_map = mapgeneration.create_map()
-
-    print(my_map)
+    for enemy in Encounter.enemy_data:
+        print(f"{enemy}\n")

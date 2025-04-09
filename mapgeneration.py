@@ -1,13 +1,16 @@
 """
 David Knowles
-4/2/2025
+4/9/2025
 
 Contains functions and classes used for generating maps and storing rooms 
 """
 
 from nodetree import Tree
-from random import randint
+# NOTE! randint is inclusive from a to b
+from random import randint 
 from random import seed as random_seed
+from dict_parser import dict_parser
+from game_object import *
 
 # returns a random element from the list, and pops it
 # returns `None` if the list is empty
@@ -43,17 +46,27 @@ class Encounter:
     boss_data = []
     item_data = []
 
+    # function that initializes the databases of enemies, minibosses, bosses, and items from the dictionary files
+    def load_object_data() -> None:
+        # initialize enemies
+        enemy_temp = dict_parser("dictionaries/enemies.txt", ":", True)
+        Encounter.enemy_data = [Enemy(x) for x in enemy_temp]
+
     # room_type should be:
     # 0 - FIGHT
     # 1 - BOSS
     # 2 - MINIBOSS
-    @staticmethod
-    def enemy_generator(room_type:int = 0) -> list:
+    def enemy_generator(room_type:int = ROOM_TYPES.FIGHT) -> list:
         enemy_list = []
+
+        num_enemies = randint(1,3)
+
+        for i in range(num_enemies):
+            # gross syntax, but just grabs a random element from `Encounter.enemy_data`
+            enemy_list.append(Encounter.enemy_data(randint(0, len(Encounter.enemy_data) - 1)))
 
         return enemy_list
 
-    @staticmethod
     def item_generator(room_type:int = 0) -> list:
         item_list = []
 

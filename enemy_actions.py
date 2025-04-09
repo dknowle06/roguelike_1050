@@ -17,7 +17,7 @@ Physical damage is damage dealt with regular weapons
 
 Special damage is damage dealt with magic 
 
-Piercing damage is damage that ignores player and enemy stats (Might remain unused in the final build?)
+Piercing damage is damage that ignores player and enemy stats 
 """
 
 # converts the damage type integers to strings
@@ -99,7 +99,7 @@ class Enemy_Action:
 # all functions should be defined as:
 """
 def foo(stats_dict:dict, enemy_name:str):
-    \*math stuff here\*
+    *math stuff here*
     return `Enemy_Action`
 """
 
