@@ -22,3 +22,15 @@
     gold_dropped:5
     attacks:"bash"
 }
+{
+    name:"Steve"
+    description:"Just some guy."
+    defense:5.0
+    attack:25.0
+    special_defense:0.0
+    special_attack:0.0
+    hp:20.0
+    exp_dropped:20
+    gold_dropped:10
+    attacks:"bash"
+}

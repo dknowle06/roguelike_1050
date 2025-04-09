@@ -10,7 +10,8 @@ from nodetree import Tree
 from random import randint 
 from random import seed as random_seed
 from dict_parser import dict_parser
-from game_object import *
+from game_object import Enemy
+from game_object import Item
 
 # returns a random element from the list, and pops it
 # returns `None` if the list is empty
@@ -59,11 +60,19 @@ class Encounter:
     def enemy_generator(room_type:int = ROOM_TYPES.FIGHT) -> list:
         enemy_list = []
 
-        num_enemies = randint(1,3)
+        if room_type == ROOM_TYPES.FIGHT:
 
-        for i in range(num_enemies):
-            # gross syntax, but just grabs a random element from `Encounter.enemy_data`
-            enemy_list.append(Encounter.enemy_data(randint(0, len(Encounter.enemy_data) - 1)))
+            num_enemies = randint(1,3)
+
+            for i in range(num_enemies):
+                # gross syntax, but just grabs a random element from `Encounter.enemy_data`
+                enemy_list.append(Encounter.enemy_data(randint(0, len(Encounter.enemy_data) - 1)))
+
+        elif room_type == ROOM_TYPES.MINIBOSS:
+            pass
+
+        elif room_type == ROOM_TYPES.BOSS:
+            pass
 
         return enemy_list
 

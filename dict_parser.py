@@ -1,6 +1,6 @@
 """
 David Knowles
-4/2/2025
+4/9/2025
 
 Contains functions that parse a text file into a dictionary
 First element will always be a string
@@ -16,11 +16,25 @@ def dict_parser(file_name:str, split_char:str = ":", clean_key:bool = False) -> 
 
     parsed_file = []
 
-    with open(file_name, "r") as f:
-        for line in f:
-            # adds the parsed line and removes the last character if it is a linebreak
-            # there is probably a smarter and cleaner and nicer looking way to do this than a ternary operator but idgaf
-            parsed_file.append(line[:-1] if "\n" in line else line)
+    try:
+
+        with open(file_name, "r") as f:
+            for line in f:
+                # adds the parsed line and removes the last character if it is a linebreak
+                # there is probably a smarter and cleaner and nicer looking way to do this than a ternary operator but idgaf
+                parsed_file.append(line[:-1] if "\n" in line else line)
+
+    # if the file doesn't exist, print an error message and exit the program 
+    except FileNotFoundError as e:
+        error_message = f"{e}\nEnsure that {file_name} has been downloaded from https://github.com/dknowle06/roguelike_1050 and is in the correct location.\nIf this file path exists and you still come across this issue, contact me at dknowle@clemson.edu."
+        print(error_message)
+
+        # create a crashlog
+        c = open("crashlog.txt", "w")
+        c.write(error_message)
+        c.close()
+
+        quit()
 
     temp_lines = []
 
