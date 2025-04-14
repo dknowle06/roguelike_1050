@@ -1,0 +1,8 @@
+{
+    name:"Rusty Dagger"
+    description:"The dagger you entered the dungeon with. Rusty rhymes with trusty!"
+    type:"weapon"
+    price:5
+    attack:5.0
+    weapon_type:"sharp"
+}

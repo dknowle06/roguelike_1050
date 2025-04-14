@@ -52,6 +52,14 @@ class Encounter:
         # initialize enemies
         enemy_temp = dict_parser("dictionaries/enemies.txt", ":", True)
         Encounter.enemy_data = [Enemy(x) for x in enemy_temp]
+        
+        # initialize items
+        item_temp = dict_parser("dictionaries/items.txt", ":", True)
+        Encounter.item_data = [Item(x) for x in item_temp]
+
+        # add items to item dictionary
+        for i in Encounter.item_data:
+            Item.update_item_dict(i)
 
     # room_type should be:
     # 0 - FIGHT
@@ -66,7 +74,7 @@ class Encounter:
 
             for i in range(num_enemies):
                 # gross syntax, but just grabs a random element from `Encounter.enemy_data`
-                enemy_list.append(Encounter.enemy_data(randint(0, len(Encounter.enemy_data) - 1)))
+                enemy_list.append(Encounter.enemy_data[randint(0, len(Encounter.enemy_data) - 1)])
 
         elif room_type == ROOM_TYPES.MINIBOSS:
             pass
@@ -86,20 +94,38 @@ class Encounter:
         # TODO:
         # - create a function that generates enemies, will be reused for fight, boss, and miniboss
 
-        # - create a function that generates a set of items, will be reused for treasure and shop
+        # - create a function that generates a set of items, will be reused for treasure and shop, as well as minibosses and bosses
 
         # - define fountain
 
         self.elements = []
         
         if (room_id in {ROOM_TYPES.FIGHT, ROOM_TYPES.BOSS, ROOM_TYPES.MINIBOSS}):
-            self.elements = enemy_generator(room_id)
+            self.elements = Encounter.enemy_generator(room_id)
+
+            # adds a bonus item to be awarded to the player upon clearing a miniboss/boss room 
+            if (room_id in {ROOM_TYPES.BOSS, ROOM_TYPES.MINIBOSS}):
+                reward_item = Encounter.item_generator(room_id)
+                self.elements.append(reward_item)
+                
         elif (room_id in {ROOM_TYPES.TREASURE, ROOM_TYPES.SHOP}):
-            self.elements = item_generator(room_id)
+            self.elements = Encounter.item_generator(room_id)
         elif (room_id == ROOM_TYPES.FOUNTAIN):
             pass
         else: # handle bad input
-            pass
+            # print an error message and then exits the program 
+            print("Error: Bad `ROOM_TYPE`.")
+            quit()
+
+    # function used for testing
+    # displays the elements within an encounter
+    # might be reworked to be used within a final build later on?
+    def element_names(self) -> str:
+        output = ""
+        for i in self.elements:
+            output += f"{i.get_name()}, "
+
+        return output[:-2]
 
 class Room:
     """
@@ -122,6 +148,9 @@ class Room:
 
     def __str__(self) -> str:
         return f"{IDS_ROOMS[self.room_id]}"
+
+    def get_encounter(self):
+        return self.this_encounter
 
 # returns a `Tree`
 """

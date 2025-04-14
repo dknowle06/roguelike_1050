@@ -1,10 +1,12 @@
 # David Knowles
-# 4/2/2025
+# 4/11/2025
 # stores parent class for game objects
 # stores classes for enemies and items 
 
 from enemy_actions import ENEMY_ACTIONS_DICT as EAD
 from random import randint
+# used for returning an object by value instead of by reference 
+import copy
 
 EMPTY = "N/A"
 
@@ -58,7 +60,9 @@ class Game_Object:
         return self.stats
 
     def get_name(self) -> str:
-        return self.Name
+        # originally had this written as `return self.Name`
+        # oops!!!!
+        return self.name
 
     def get_description(self) -> str:
         return self.description
@@ -97,12 +101,34 @@ class Enemy(Game_Object):
 
 class Item(Game_Object):
 
+    # dictionary that pairs item names to their object definition
+    # used to initialize players (and enemies maybe?) with specific items in their inventory 
+    item_dict = {}
+
+    # function called to update item dictionary
+    # `item_object` should be an Item 
+    def update_item_dict(item_object):
+        key = item_object.get_name().lower()
+
+        Item.item_dict[key] = item_object
+        print(key)
+
+    # returns a copy of the item from the dictionary
+    def get_item_from_dict(item_name:str):
+        item_name = item_name.lower()
+
+        return copy.deepcopy(Item.item_dict[item_name])
+
+
     def __init__(self, item_dict:dict):
         Game_Object.__init__(self, safe_assign(item_dict, "Name"), safe_assign(item_dict, "Description"))
 
-        # `stats` is going to be much more railroaded for items than enemies, since i will use functions to augment player stats with items
+        self.item_type = safe_assign(item_dict, "Type")
 
-        Game_Object.add_stat(self, "Price", safe_assign(item_dict, "Price"))
+        # set up item stats
+        for key in item_dict:
+            if not key in {"Name", "Description", "Type"}:
+                Game_Object.add_stat(self, key, item_dict[key])
 
         self.player_owned = False
         self.is_treasure = False
