@@ -18,9 +18,18 @@ from game_object import Item
 def rand_element(listparam:list):
     return listparam.pop(randint(0, len(listparam) - 1)) if len(listparam) > 0 else None
 
-# literally just an alias for `random.seed(n)`
-def set_seed(seed:int = 0):
-    random_seed(seed)
+# initializes the seed and prints out the seed
+# prints an error message if the seed isn't an integer
+def set_seed(seed = 0):
+    try:
+        seed = int(seed)
+
+        random_seed(seed)
+        print(f"Seed set to {seed}.")
+    except ValueError as e:
+        print(e)
+        print(f"Seed {seed} not of type `int`.")
+        quit()
 
 # class that stores all possible room types, and associates them with an integer
 # kind of like a faux-enum, since python enums require importing a library for some reason 
