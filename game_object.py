@@ -1,5 +1,5 @@
 # David Knowles
-# 4/11/2025
+# 4/16/2025
 # stores parent class for game objects
 # stores classes for enemies and items 
 
@@ -99,6 +99,12 @@ class Enemy(Game_Object):
         return self.attacks[element_id]
 
 
+"""
+Item types:
+Weapon - used when attacking 
+Artifacts - apply passive bonuses while in the inventory, either straight stat boosts or something else 
+"""
+
 class Item(Game_Object):
 
     # dictionary that pairs item names to their object definition
@@ -111,7 +117,6 @@ class Item(Game_Object):
         key = item_object.get_name().lower()
 
         Item.item_dict[key] = item_object
-        print(key)
 
     # returns a copy of the item from the dictionary
     def get_item_from_dict(item_name:str):

@@ -41,7 +41,7 @@ class ROOM_TYPES:
     SHOP = 20
     FOUNTAIN = 300
 
-TESTING = True
+TESTING = False
 
 class Encounter:
     # class that generates an encounter for a room

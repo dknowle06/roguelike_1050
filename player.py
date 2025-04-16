@@ -1,6 +1,6 @@
 """
 David Knowles 
-4/11/2025
+4/16/2025
 Class containing player information
 """
 
@@ -8,10 +8,16 @@ from dict_parser import dict_parser
 from game_object import Item
 
 class Player:
+    # set of all possible player actions
+    PLAYER_ACTIONS = {"CHECK", "ATTACK", "EQUIP", "TOSS", "BUY", "SELL"}
+
     def __init__(self, name:str, stats_filepath:str = "dictionaries/player_stats.txt"):
         self.name = name
+        self.stats = {}
 
-        stats_temp = dict_parser(stats_filepath, ":", True)
+        # i have to use `[0]` here, since `dict_parser` returns a list of dictionaries ...
+        # ... and i want to access the first and (ideally) only item in the list
+        stats_temp = dict_parser(stats_filepath, ":", True)[0]
 
         # assigns the player's inventory
         # crashes if it's undefined, and gives an error message
@@ -24,8 +30,14 @@ class Player:
             print(f"{e}\n\"starting_inventory\" undefined in {stats_filepath} or items not properly initialized.")
             quit()
 
+
+        self.stats = stats_temp
+
         # used to store status effects
-        self.temp_stats = {}
+        self.stat_fx = {}
 
     def get_stats(self) -> dict:
         return self.stats
+
+    def __str__(self) -> str:
+        return f"You are {self.name}."
