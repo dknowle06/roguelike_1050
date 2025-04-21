@@ -1,5 +1,5 @@
 # David Knowles
-# 4/16/2025
+# 4/21/2025
 # stores parent class for game objects
 # stores classes for enemies and items 
 
@@ -103,6 +103,7 @@ class Enemy(Game_Object):
 Item types:
 Weapon - used when attacking 
 Artifacts - apply passive bonuses while in the inventory, either straight stat boosts or something else 
+Consumables - Items that are consumed upon use
 """
 
 class Item(Game_Object):

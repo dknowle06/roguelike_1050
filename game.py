@@ -1,6 +1,6 @@
 """
 David Knowles 
-4/16/2025
+4/21/2025
 File that stores the main gameloop
 
 This is like if balatro was a dungeon crawler and also made by someone who doesn't really understand game design
@@ -11,13 +11,34 @@ import mapgeneration as mpgt
 from player import Player
 
 import sys # used to grab command line arguments 
-import time # used for random seed generation
+import time # used for random seed generation and printing load times 
+
+
+# sets that store valid player commands 
+# `EVERYDAY_COMMS` shouldn't be used, it's only here to be unioned to create the attack and shop command sets 
+EVERYDAY_COMMS = {"CHECK", "EQUIP", "TOSS"}
+ATTACK_COMMS = EVERYDAY_COMMS | {"ATTACK"}
+SHOP_COMMS = EVERYDAY_COMMS | {"BUY", "SELL"}
 
 
 # prints `num` newlines
 def newline(num:int = 1):
     for i in range(num):
-        print()
+        print() # prints a blank line 
+
+# recursive function that validates user input 
+# `test_case` should be a lambda or a function that returns a boolean value 
+def input_validation(msg:str, yell:str, test_case):
+    print(msg)
+
+    # takes user input, strips whitespace, and converts the input to uppercase
+    user_input = input().strip().upper()
+
+    if test_case(user_input):
+        return user_input
+    else:
+        print(yell)
+        return input_validation(msg, yell, test_case)
 
 if __name__ == "__main__":
     # used to measure the amount of time it takes to setup the program
