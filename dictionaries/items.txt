@@ -4,5 +4,13 @@
     type:"weapon"
     price:5
     attack:5.0
-    weapon_type:"sharp"
+    weapon_type:"physical"
+}
+{
+    name:"Old Wand"
+    description:"An old wooden wand. Holding it, you can feel its power. And splinters."
+    type:"weapon"
+    price:10
+    attack:6.5
+    weapon_type:"special_attack"
 }

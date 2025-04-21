@@ -1,0 +1,12 @@
+{
+    name:"Slime Prince"
+    description:"An even bigger green blob of goo, with a crown on top. Despite being green, he vaguely smells of cherry candy."
+    defense:10.0
+    attack:20.0
+    special_defense:5.0
+    special_attack:5.0
+    hp:50.0
+    exp_dropped:50
+    gold_dropped:50
+    attacks:"bash"
+}

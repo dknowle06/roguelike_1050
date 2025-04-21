@@ -1,6 +1,6 @@
 """
 David Knowles
-4/9/2025
+4/21/2025
 
 Contains functions and classes used for generating maps and storing rooms 
 """
@@ -12,6 +12,7 @@ from random import seed as random_seed
 from dict_parser import dict_parser
 from game_object import Enemy
 from game_object import Item
+import copy
 
 # returns a random element from the list, and pops it
 # returns `None` if the list is empty
@@ -61,6 +62,15 @@ class Encounter:
         # initialize enemies
         enemy_temp = dict_parser("dictionaries/enemies.txt", ":", True)
         Encounter.enemy_data = [Enemy(x) for x in enemy_temp]
+        print("Enemies initialized!")
+
+        miniboss_temp = dict_parser("dictionaries/minibosses.txt", ":", True)
+        Encounter.miniboss_data = [Enemy(x) for x in miniboss_temp]
+        print("Minibosses initialized!")
+
+        boss_temp = dict_parser("dictionaries/bosses.txt", ":", True)
+        Encounter.boss_data = [Enemy(x) for x in boss_temp]
+        print("Bosses initialized!")
         
         # initialize items
         item_temp = dict_parser("dictionaries/items.txt", ":", True)
@@ -69,6 +79,8 @@ class Encounter:
         # add items to item dictionary
         for i in Encounter.item_data:
             Item.update_item_dict(i)
+
+        print("Items initialized!")
 
     # room_type should be:
     # 0 - FIGHT
@@ -82,14 +94,16 @@ class Encounter:
             num_enemies = randint(1,3)
 
             for i in range(num_enemies):
-                # gross syntax, but just grabs a random element from `Encounter.enemy_data`
-                enemy_list.append(Encounter.enemy_data[randint(0, len(Encounter.enemy_data) - 1)])
+                # gross syntax, but just grabs a random element from `Encounter.enemy_data` and copies it 
+                enemy_list.append(copy.deepcopy(Encounter.enemy_data[randint(0, len(Encounter.enemy_data) - 1)]))
+
+        # these all do the same thing as above but for their respective data type 
 
         elif room_type == ROOM_TYPES.MINIBOSS:
-            pass
+            enemy_list.append(copy.deepcopy(Encounter.miniboss_data[randint(0, len(Encounter.miniboss_data) - 1)]))
 
         elif room_type == ROOM_TYPES.BOSS:
-            pass
+            enemy_list.append(copy.deepcopy(Encounter.boss_data[randint(0, len(Encounter.boss_data) - 1)]))
 
         return enemy_list
 
@@ -120,10 +134,11 @@ class Encounter:
         elif (room_id in {ROOM_TYPES.TREASURE, ROOM_TYPES.SHOP}):
             self.elements = Encounter.item_generator(room_id)
         elif (room_id == ROOM_TYPES.FOUNTAIN):
-            pass
+            # if `self.elements` is an array of length 1 with only an integer, it can be assumed that it is a fountain room 
+            self.elements = [ROOM_TYPES.FOUNTAIN] 
         else: # handle bad input
             # print an error message and then exits the program 
-            print("Error: Bad `ROOM_TYPE`.")
+            print(f"Error: Bad `ROOM_TYPE`: {room_id}.")
             quit()
 
     # function used for testing
@@ -265,9 +280,19 @@ def create_map():
 
         previous = current_ids
 
+    print("Room IDs Set!")
+
+    # converts room ids to proper encounters 
+    for key in generated_map.parent_dictionary:
+        room_id_temp = generated_map.parent_dictionary[key].get_data() # gets the room id stored at the room index
+        generated_map.parent_dictionary[key].data = Encounter(room_id_temp) # replaces the room id with an encounter 
+
+    print("Encounter data generated!")
+
     # prints MORE debug info
     # helps ensure that the tree is of a proper length, should be 18 as of 3/26/2025
     if TESTING:
         print("genmap len =", len(generated_map))
+        print(generated_map)
     
     return generated_map
