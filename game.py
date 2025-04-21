@@ -7,6 +7,8 @@ This is like if balatro was a dungeon crawler and also made by someone who doesn
 Game's title is currently 1050 Roguelike, I can't think of anything else better
 
 Check https://stackoverflow.com/questions/27276135/python-random-system-time-seed for an algorithm I used for random seed generation
+
+I apologize for my spaghetti code
 """
 
 import mapgeneration as mpgt
@@ -75,10 +77,14 @@ if __name__ == "__main__":
     mpgt.Encounter.load_object_data()
     
     print("Generating dungeon map...")
-    dungeon_map = mpgt.create_map()
+    dungeon_map_ids = mpgt.create_map()
+    dungeon_map = mpgt.modify_map(dungeon_map_ids)
 
     # prints dungeon map object data if debugging
     if DEBUG:
+        for key in dungeon_map_ids.parent_dictionary:
+            print(f"{key}:{dungeon_map_ids.parent_dictionary[key]}")
+
         for key in dungeon_map.parent_dictionary:
             print(dungeon_map.parent_dictionary[key].get_data().elements)
 
@@ -112,3 +118,5 @@ if __name__ == "__main__":
     newline()
 
     print(player_obj)
+
+    print(mpgt.dungeon_map_to_string(dungeon_map_ids))

@@ -282,13 +282,6 @@ def create_map():
 
     print("Room IDs Set!")
 
-    # converts room ids to proper encounters 
-    for key in generated_map.parent_dictionary:
-        room_id_temp = generated_map.parent_dictionary[key].get_data() # gets the room id stored at the room index
-        generated_map.parent_dictionary[key].data = Encounter(room_id_temp) # replaces the room id with an encounter 
-
-    print("Encounter data generated!")
-
     # prints MORE debug info
     # helps ensure that the tree is of a proper length, should be 18 as of 3/26/2025
     if TESTING:
@@ -296,3 +289,59 @@ def create_map():
         print(generated_map)
     
     return generated_map
+
+# takes a tree of room ids and converts it to 
+def modify_map(dungeon_map_ids):
+    dungeon_map = copy.deepcopy(dungeon_map_ids)
+
+    # converts room ids to proper encounters 
+    for key in dungeon_map.parent_dictionary:
+        room_id_temp = dungeon_map.parent_dictionary[key].get_data() # gets the room id stored at the room index
+        dungeon_map.parent_dictionary[key].data = Encounter(room_id_temp) # replaces the room id with an encounter 
+
+    print("Encounter data generated!")
+
+    return dungeon_map
+
+# dictionary used when printing a dungeon map
+# converts dungeon ids to relevant symbols 
+ID_TO_SYMBOL = {
+    ROOM_TYPES.FIGHT: "🗡",
+    ROOM_TYPES.BOSS: "♛",
+    ROOM_TYPES.MINIBOSS: "☠",
+    ROOM_TYPES.TREASURE: "✗",
+    ROOM_TYPES.SHOP: "$",
+    ROOM_TYPES.FOUNTAIN: "♡",
+    2025: "O"
+}
+
+# converts a dungeon map in id form to a string that can be printed
+def dungeon_map_to_string(dungeon_map_ids) -> str:
+    id_dict = dungeon_map_ids.parent_dictionary
+
+    top_row = ""
+    middle_row = ""
+    bottom_row = ""
+
+    setting_up_str = True
+    idx = 0
+
+    while setting_up_str:
+        num_children = len(id_dict[idx].get_children())
+
+        if num_children == 0:
+            middle_row += ID_TO_SYMBOL[id_dict[idx].get_data()]
+            setting_up_str = False
+
+        elif num_children == 1:
+            middle_row += ID_TO_SYMBOL[id_dict[idx].get_data()] + " - "
+            top_row += "    "
+            bottom_row += "    "
+
+        elif num_children == 2:
+            middle_row += ID_TO_SYMBOL[id_dict[idx].get_data()]
+
+        idx += 1
+
+    output = f"{top_row}\n{middle_row}\n{bottom_row}"
+    return output
