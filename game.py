@@ -1,6 +1,6 @@
 """
 David Knowles 
-4/21/2025
+4/22/2025
 File that stores the main gameloop
 
 This is like if balatro was a dungeon crawler and also made by someone who doesn't really understand game design but has played way too much balatro
@@ -18,6 +18,8 @@ from player import Player
 import sys # used to grab command line arguments 
 import time # used for random seed generation and printing load times 
 
+from common_funcs import *
+
 
 # sets that store valid player commands 
 # `EVERYDAY_COMMS` shouldn't be used, it's only here to be unioned to create the attack and shop command sets 
@@ -27,39 +29,6 @@ SHOP_COMMS = EVERYDAY_COMMS | {"BUY", "SELL"}
 NAVIGATION_COMMS = EVERYDAY_COMMS | {"NEXT", "CONTINUE"} # next and continue will do the same thing 
 
 DEBUG = True
-
-
-# prints `num` newlines
-def newline(num:int = 1):
-    for i in range(num):
-        print() # prints a blank line 
-
-# recursive function that validates user input 
-# `test_case` should be a lambda or a function that returns a boolean value 
-# `msg` is the string that is printed to prompt the user for input 
-# `yell` is the string that is printed to yell at the user for bad input 
-def input_validation(msg:str, yell:str, test_case):
-    print(msg, end="")
-
-    # takes user input, strips whitespace, and converts the input to uppercase
-    user_input = input().strip().upper()
-
-    if test_case(user_input):
-        return user_input
-    else:
-        print(yell, end="")
-        return input_validation(msg, yell, test_case)
-    
-# converts a list to a string, used during the gameloop
-def list_to_string(arr:list) -> str:
-    counter = 1
-    output = ""
-
-    for i in arr:
-        output += f"[{counter}] {i}, "
-        counter += 1
-
-    return output[:-2]
 
 if __name__ == "__main__":
     # used to measure the amount of time it takes to setup the program
