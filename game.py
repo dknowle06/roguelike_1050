@@ -8,10 +8,11 @@ Game's title is currently 1050 Roguelike, I can't think of anything else better
 
 Check https://stackoverflow.com/questions/27276135/python-random-system-time-seed for an algorithm I used for random seed generation
 
-I apologize for my spaghetti code
+I apologize for my spaghetti code!!! The scope of this project is much larger than anything else I've written before.
 """
 
 import mapgeneration as mpgt
+from mapgeneration import ROOM_TYPES
 from player import Player
 
 import sys # used to grab command line arguments 
@@ -38,7 +39,7 @@ def newline(num:int = 1):
 # `msg` is the string that is printed to prompt the user for input 
 # `yell` is the string that is printed to yell at the user for bad input 
 def input_validation(msg:str, yell:str, test_case):
-    print(msg)
+    print(msg, end="")
 
     # takes user input, strips whitespace, and converts the input to uppercase
     user_input = input().strip().upper()
@@ -46,8 +47,19 @@ def input_validation(msg:str, yell:str, test_case):
     if test_case(user_input):
         return user_input
     else:
-        print(yell)
+        print(yell, end="")
         return input_validation(msg, yell, test_case)
+    
+# converts a list to a string, used during the gameloop
+def list_to_string(arr:list) -> str:
+    counter = 1
+    output = ""
+
+    for i in arr:
+        output += f"[{counter}] {i}, "
+        counter += 1
+
+    return output[:-2]
 
 if __name__ == "__main__":
     # used to measure the amount of time it takes to setup the program
@@ -72,6 +84,9 @@ if __name__ == "__main__":
         seed = ((t & 0xff000000) >> 24) + ((t & 0x00ff0000) >>  8) + ((t & 0x0000ff00) <<  8) + ((t & 0x000000ff) << 24)
         mpgt.set_seed(seed)
 
+        # NOTE: I've noticed that bizzarely, the seeds seem to always be an odd integer (i'm struggling to find an even seed in my tests). 
+        # this does work to my favor, since odd numbers do feel more "random" than even integers
+
     # loads game objects into memory
     print("Loading game objects...")
     mpgt.Encounter.load_object_data()
@@ -91,6 +106,7 @@ if __name__ == "__main__":
     print(f"Game setup completed in {time.time() - start_time} seconds.")
 
     # prints title 
+    # the for loops print dashes, because i'm too lazy to type out 30 dashes 
     print("\n\n")
     for i in range(2):
         print("\t", end="")
@@ -117,6 +133,28 @@ if __name__ == "__main__":
     player_obj = Player(username,"dictionaries/player_stats.txt")
     newline()
 
+    # prints the player stats
     print(player_obj)
 
-    print(mpgt.dungeon_map_to_string(dungeon_map))
+    # displays the dungeon map
+    print(f"\nDungeon map:\n{mpgt.dungeon_map_to_string(dungeon_map)}\n")
+
+    # `player_position` stores the position of the player. directly comparable to the room ids in the dungeon_map
+    player_position = 0
+    gameloop = True
+
+    while gameloop:
+        current_room = dungeon_map.get_node_from_id(player_position).get_data()
+        room_id = current_room.get_id()
+
+        if room_id == ROOM_TYPES.FIGHT:
+            enemies = current_room.get_encounter().get_elements()
+            enemy_names = [x.get_name() for x in enemies]
+
+            print(f"You enter a room, and get ambushed by some enemies:")
+            print(list_to_string(enemy_names))
+
+            print("What do you want to do?")
+
+            user_action = input_validation(f"", "Please choose a valid action!\n", lambda a: a in ATTACK_COMMS)
+

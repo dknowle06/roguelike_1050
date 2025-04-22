@@ -140,12 +140,12 @@ class Item(Game_Object):
         self.is_treasure = False
 
     # used to denote whether or not the item is contained within the player's inventory 
-    def set_player_ownership(player_owns:bool) -> None:
+    def set_player_ownership(self, player_owns:bool) -> None:
         self.player_owned = player_owns
 
     # used to denote whether item is contained within a treasure chest
     # mainly used to know when price should be printed, since price shouldn't be printed if the item is free
-    def set_is_treasure(is_treasure:bool) -> None:
+    def set_is_treasure(self, is_treasure:bool) -> None:
         self.is_treasure = is_treasure
 
     def __str__(self) -> str:

@@ -142,6 +142,9 @@ class Encounter:
             print(f"Error: Bad `ROOM_TYPE`: {room_id}.")
             quit()
 
+    def get_elements(self) -> list:
+        return self.elements
+
     # function used for testing
     # displays the elements within an encounter
     # might be reworked to be used within a final build later on?
@@ -309,7 +312,8 @@ def modify_map(dungeon_map_ids):
 
     return dungeon_map
 
-# id used to determine the position of a player 
+# id used to determine the position of a player
+# value is arbitray, i just went with 2025 bc that's the year  
 PLAYER_HERE = 2025
 
 # dictionary used when printing a dungeon map
@@ -324,7 +328,8 @@ ID_TO_SYMBOL = {
     PLAYER_HERE: "O"
 }
 
-# converts a dungeon map in id form to a string that can be printed
+# converts a dungeon map to a string that can be printed
+# player position tells the function where the player is, and returns "O" at the player's position
 def dungeon_map_to_string(dungeon_map, player_position:int = -1) -> str:
     id_dict = copy.deepcopy(dungeon_map.parent_dictionary) # copied since an id may need to be changed 
 
@@ -344,14 +349,17 @@ def dungeon_map_to_string(dungeon_map, player_position:int = -1) -> str:
     while idx < 18:
         num_children = len(id_dict[idx].get_children())
 
+        # final boss
         if num_children == 0:
             middle_row += ID_TO_SYMBOL[id_dict[idx].get_data().get_id()]
-
+        
+        # straight path
         elif num_children == 1:
             middle_row += ID_TO_SYMBOL[id_dict[idx].get_data().get_id()] + " - "
             top_row += "    "
             bottom_row += "    "
 
+        # two-way split path
         elif num_children == 2:
             middle_row += ID_TO_SYMBOL[id_dict[idx].get_data().get_id()] + "          "
 
@@ -360,6 +368,7 @@ def dungeon_map_to_string(dungeon_map, player_position:int = -1) -> str:
 
             idx += 4
 
+        # three-way split path
         elif num_children == 3:
             middle_row += f"{ID_TO_SYMBOL[id_dict[idx].get_data().get_id()]} - {ID_TO_SYMBOL[id_dict[idx + 3].get_data().get_id()]} - {ID_TO_SYMBOL[id_dict[idx + 4].get_data().get_id()]} - "
 
