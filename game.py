@@ -19,14 +19,7 @@ import sys # used to grab command line arguments
 import time # used for random seed generation and printing load times 
 
 from common_funcs import *
-
-
-# sets that store valid player commands 
-# `EVERYDAY_COMMS` shouldn't be used, it's only here to be unioned to create the attack and shop command sets 
-EVERYDAY_COMMS = {"CHECK", "EQUIP", "TOSS", "USE"}
-ATTACK_COMMS = EVERYDAY_COMMS | {"ATTACK"}
-SHOP_COMMS = EVERYDAY_COMMS | {"BUY", "SELL"}
-NAVIGATION_COMMS = EVERYDAY_COMMS | {"NEXT", "CONTINUE"} # next and continue will do the same thing 
+from room_handler import room_handler
 
 DEBUG = True
 
@@ -100,6 +93,7 @@ if __name__ == "__main__":
     username = input().title()
 
     player_obj = Player(username,"dictionaries/player_stats.txt")
+    player_obj.set_equipped_weapon(0)
     newline()
 
     # prints the player stats
@@ -116,14 +110,4 @@ if __name__ == "__main__":
         current_room = dungeon_map.get_node_from_id(player_position).get_data()
         room_id = current_room.get_id()
 
-        if room_id == ROOM_TYPES.FIGHT:
-            enemies = current_room.get_encounter().get_elements()
-            enemy_names = [x.get_name() for x in enemies]
-
-            print(f"You enter a room, and get ambushed by some enemies:")
-            print(list_to_string(enemy_names))
-
-            print("What do you want to do?")
-
-            user_action = input_validation(f"", "Please choose a valid action!\n", lambda a: a in ATTACK_COMMS)
-
+        room_handler(current_room, player_obj)

@@ -4,7 +4,18 @@ David Knowles
 
 File that stores common functions that are used by multiple files. 
 There is very little cohesion in this file. 
+
+Also stores the sets that contains valid commands 
 """
+
+# sets that store valid player commands 
+# `EVERYDAY_COMMS` shouldn't be used, it's only here to be unioned to create the attack and shop command sets 
+EVERYDAY_COMMS = {"INVENTORY", "EQUIP", "USE"}
+ATTACK_COMMS = EVERYDAY_COMMS | {"CHECK", "ATTACK"}
+SHOP_COMMS = EVERYDAY_COMMS | {"BUY", "SELL"}
+NAVIGATION_COMMS = EVERYDAY_COMMS | {"NEXT", "CONTINUE"} # next and continue will do the same thing 
+
+VALID_ACTION = "Please choose a valid action!\n"
 
 # prints `num` newlines
 def newline(num:int = 1):
