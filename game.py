@@ -77,16 +77,16 @@ if __name__ == "__main__":
     mpgt.Encounter.load_object_data()
     
     print("Generating dungeon map...")
-    dungeon_map_ids = mpgt.create_map()
-    dungeon_map = mpgt.modify_map(dungeon_map_ids)
+    # creates a dungeon map of ids, and then converts the id map to a room map
+    dungeon_map = mpgt.modify_map(mpgt.create_map())
 
     # prints dungeon map object data if debugging
     if DEBUG:
-        for key in dungeon_map_ids.parent_dictionary:
-            print(f"{key}:{dungeon_map_ids.parent_dictionary[key]}")
+        for key in dungeon_map.parent_dictionary:
+            print(f"{key}:{dungeon_map.parent_dictionary[key]}")
 
         for key in dungeon_map.parent_dictionary:
-            print(dungeon_map.parent_dictionary[key].get_data().elements)
+            print(dungeon_map.parent_dictionary[key].get_data().get_encounter().elements)
 
     print(f"Game setup completed in {time.time() - start_time} seconds.")
 
@@ -119,4 +119,4 @@ if __name__ == "__main__":
 
     print(player_obj)
 
-    print(mpgt.dungeon_map_to_string(dungeon_map_ids))
+    print(mpgt.dungeon_map_to_string(dungeon_map))

@@ -3,6 +3,7 @@ David Knowles
 4/21/2025
 
 Contains functions and classes used for generating maps and storing rooms 
+Stores the Encounter and the Room class 
 """
 
 from nodetree import Tree
@@ -171,10 +172,13 @@ class Room:
         self.this_encounter = Encounter(self.room_id)
 
     def __str__(self) -> str:
-        return f"{IDS_ROOMS[self.room_id]}"
+        return f"{Room.IDS_ROOMS[self.room_id]}"
 
     def get_encounter(self):
         return self.this_encounter
+    
+    def get_id(self):
+        return self.room_id
 
 # returns a `Tree`
 """
@@ -189,7 +193,9 @@ def create_map():
     threesplit_loc = []
 
     # used to decide which levels will have a split path
-    undecided_rooms = list(range(1,10))
+    # NOTE: On 4/21/2025 I changed the upper bound from 10 to 9. A bug involving generating a two-way split as the last set was discovered
+    # To remedy this, I lowered the range in which splits can be placed. 
+    undecided_rooms = list(range(1,9))
 
     # place the 2-way split
     room_num = rand_element(undecided_rooms)
@@ -290,58 +296,85 @@ def create_map():
     
     return generated_map
 
-# takes a tree of room ids and converts it to 
+# takes a tree of room ids and converts it to room objects
 def modify_map(dungeon_map_ids):
     dungeon_map = copy.deepcopy(dungeon_map_ids)
 
     # converts room ids to proper encounters 
     for key in dungeon_map.parent_dictionary:
         room_id_temp = dungeon_map.parent_dictionary[key].get_data() # gets the room id stored at the room index
-        dungeon_map.parent_dictionary[key].data = Encounter(room_id_temp) # replaces the room id with an encounter 
+        dungeon_map.parent_dictionary[key].data = Room(room_id_temp) # replaces the room id with an encounter 
 
-    print("Encounter data generated!")
+    print("Encounter + Room data generated!")
 
     return dungeon_map
+
+# id used to determine the position of a player 
+PLAYER_HERE = 2025
 
 # dictionary used when printing a dungeon map
 # converts dungeon ids to relevant symbols 
 ID_TO_SYMBOL = {
     ROOM_TYPES.FIGHT: "🗡",
     ROOM_TYPES.BOSS: "♛",
-    ROOM_TYPES.MINIBOSS: "☠",
+    ROOM_TYPES.MINIBOSS: "⚠",
     ROOM_TYPES.TREASURE: "✗",
     ROOM_TYPES.SHOP: "$",
     ROOM_TYPES.FOUNTAIN: "♡",
-    2025: "O"
+    PLAYER_HERE: "O"
 }
 
 # converts a dungeon map in id form to a string that can be printed
-def dungeon_map_to_string(dungeon_map_ids) -> str:
-    id_dict = dungeon_map_ids.parent_dictionary
+def dungeon_map_to_string(dungeon_map, player_position:int = -1) -> str:
+    id_dict = copy.deepcopy(dungeon_map.parent_dictionary) # copied since an id may need to be changed 
+
+    if player_position in range(0,18):
+        id_dict[player_position].data.room_id = PLAYER_HERE
 
     top_row = ""
     middle_row = ""
     bottom_row = ""
 
-    setting_up_str = True
     idx = 0
 
-    while setting_up_str:
+    # i do sincerely apologize for this function's implementation. 
+    # i did not design this for reusability, or scalability. the map size for printing is hardcoded at 18
+    # for the functionality of this program. this is fine. i could rework it if needed, but otherwise this is good enough
+
+    while idx < 18:
         num_children = len(id_dict[idx].get_children())
 
         if num_children == 0:
-            middle_row += ID_TO_SYMBOL[id_dict[idx].get_data()]
-            setting_up_str = False
+            middle_row += ID_TO_SYMBOL[id_dict[idx].get_data().get_id()]
 
         elif num_children == 1:
-            middle_row += ID_TO_SYMBOL[id_dict[idx].get_data()] + " - "
+            middle_row += ID_TO_SYMBOL[id_dict[idx].get_data().get_id()] + " - "
             top_row += "    "
             bottom_row += "    "
 
         elif num_children == 2:
-            middle_row += ID_TO_SYMBOL[id_dict[idx].get_data()]
+            middle_row += ID_TO_SYMBOL[id_dict[idx].get_data().get_id()] + "          "
+
+            top_row += f"  / {ID_TO_SYMBOL[id_dict[idx + 1].get_data().get_id()]} - {ID_TO_SYMBOL[id_dict[idx + 2].get_data().get_id()]} \\"
+            bottom_row += f"  \\ {ID_TO_SYMBOL[id_dict[idx + 3].get_data().get_id()]} - {ID_TO_SYMBOL[id_dict[idx + 4].get_data().get_id()]} /"
+
+            idx += 4
+
+        elif num_children == 3:
+            middle_row += f"{ID_TO_SYMBOL[id_dict[idx].get_data().get_id()]} - {ID_TO_SYMBOL[id_dict[idx + 3].get_data().get_id()]} - {ID_TO_SYMBOL[id_dict[idx + 4].get_data().get_id()]} - "
+
+            top_row += f"  / {ID_TO_SYMBOL[id_dict[idx + 1].get_data().get_id()]} - {ID_TO_SYMBOL[id_dict[idx + 2].get_data().get_id()]} \\"
+            bottom_row += f"  \\ {ID_TO_SYMBOL[id_dict[idx + 5].get_data().get_id()]} - {ID_TO_SYMBOL[id_dict[idx + 6].get_data().get_id()]} /"
+
+            idx += 6
+
 
         idx += 1
 
-    output = f"{top_row}\n{middle_row}\n{bottom_row}"
+        
+    middle_border = ""
+    for i in range(47):
+        middle_border += "-"
+
+    output = f"/{middle_border}\\\n| {top_row}    |\n| {middle_row}  |\n| {bottom_row}    |\n\\{middle_border}/"
     return output
