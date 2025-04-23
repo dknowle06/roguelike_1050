@@ -1,5 +1,5 @@
 # David Knowles
-# 4/21/2025
+# 4/23/2025
 # stores parent class for game objects
 # stores classes for enemies and items 
 
@@ -58,6 +58,9 @@ class Game_Object:
 
     def get_stats(self) -> dict:
         return self.stats
+
+    def get_stat(self, key:str):
+        return self.stats[key]
 
     def get_name(self) -> str:
         # originally had this written as `return self.Name`

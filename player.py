@@ -1,6 +1,6 @@
 """
 David Knowles 
-4/22/2025
+4/23/2025
 Class containing player information
 """
 
@@ -48,6 +48,9 @@ class Player:
 
     def get_stats(self) -> dict:
         return self.stats
+
+    def get_stat(self, key:str):
+        return self.stats[key]
 
     # sets the player's equipped weapon
     # has no checks to ensure the player is equipping a weapon, that is something that the input handler should do 

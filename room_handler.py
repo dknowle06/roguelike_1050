@@ -1,5 +1,5 @@
 """
-4/22/2025
+4/23/2025
 David Knowles
 
 File that handles room actions
@@ -12,6 +12,7 @@ from common_funcs import *
 
 
 # exception raised when user's input is invalid
+# there isn't much functionally different between this and the exception superclass 
 class BadInputException(Exception):
     def __init__(self, msg):
         self.msg = msg
@@ -30,7 +31,7 @@ def input_handler(user_input:str, elements:list, player) -> bool:
     # second element should be the command parameter 
     parsed_input = user_input.upper().split()
 
-    if len(parsed_input) < 2 and parsed_input[0] not in {"INVENTORY", "NEXT", "CONTINUE"}:
+    if len(parsed_input) < 2 and parsed_input[0] not in {"INVENTORY", "NEXT", "CONTINUE", "MAP"}:
         raise BadInputException(VALID_ACTION)
 
     command = parsed_input[0]
@@ -64,6 +65,23 @@ def input_handler(user_input:str, elements:list, player) -> bool:
         player.set_equipped_weapon(parameter - 1)
 
         print(f"\nYou equipped your {player.inventory[parameter - 1].get_name()}!\n")
+
+        return True
+
+    elif command == "ATTACK":
+        if parameter not in range(1, len(elements) + 1):
+            raise BadInputException(VALID_ACTION)
+
+        player_attack = player.get_stat("Attack")
+        player_sp_attack = player.get_stat("Special Attack")
+
+        index = parameter - 1
+        enemy = elements[index]
+
+        enemy_defense = enemy.get_stat("Defense")
+        enemy_sp_defense = enemy.get_stat("Special Defense")
+
+        weapon_attack = player.equipped_weapon.get_stat("Attack")
 
         return True
 

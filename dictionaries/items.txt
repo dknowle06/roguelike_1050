@@ -12,5 +12,5 @@
     type:"weapon"
     price:10
     attack:6.5
-    weapon_type:"special_attack"
+    weapon_type:"special"
 }
