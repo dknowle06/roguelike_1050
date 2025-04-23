@@ -88,3 +88,5 @@ class Player:
 
         if num_levels_gained > 0:
             print(f"You gained {num_levels_gained} levels!")
+
+            # TODO: Update stats on level up
