@@ -8,6 +8,8 @@ from dict_parser import dict_parser
 from game_object import Item
 from common_funcs import list_to_string
 
+EXP_IN_A_LEVEL = 50
+
 class Player:
     # set of all possible player actions
     # irrelevant set, i'm gonna keep it just in case but for now it's gonna stay commented out 
@@ -17,8 +19,11 @@ class Player:
         self.name = name
         self.stats = {}
 
+        # NOTE: There is 50 exp contained in 1 level 
         self.level = 1
         self.exp_total = 0
+
+        self.gold = 0
 
         # i have to use `[0]` here, since `dict_parser` returns a list of dictionaries ...
         # ... and i want to access the first and (ideally) only item in the list
@@ -58,7 +63,7 @@ class Player:
         self.equipped_weapon = self.inventory[idx]
 
     def __str__(self) -> str:
-        return f"You are {self.name}.\nYou are level {self.level} and have {self.exp_total} experience points.\nYou currently have a(n) {self.equipped_weapon.get_name()} equipped."
+        return f"You are {self.name}.\nYou are level {self.level} and have {self.exp_total} experience points.\nYou currently have a(n) {self.equipped_weapon.get_name()} equipped.\nYou have {self.gold} gold."
 
     # converts the inventory array into a string that looks prettier for printing 
     def inventory_as_str(self) -> str:
@@ -68,3 +73,18 @@ class Player:
             output.append(i.get_name())
 
         return list_to_string(output)
+
+    def add_gold(self, gold:int) -> None:
+        self.gold += gold 
+
+
+    def add_exp(self, exp:int) -> None:
+        self.exp += exp
+
+        num_levels_gained = self.exp // EXP_IN_A_LEVEL 
+        self.exp -= (EXP_IN_A_LEVEL * num_levels_gained)
+
+        self.level += num_levels_gained
+
+        if num_levels_gained > 0:
+            print(f"You gained {num_levels_gained} levels!")

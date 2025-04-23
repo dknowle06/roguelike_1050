@@ -101,6 +101,9 @@ class Enemy(Game_Object):
 
         return self.attacks[element_id]
 
+    def take_damage(self, damage:float) -> None:
+        self.stats["Hp"] -= damage 
+
 
 """
 Item types:

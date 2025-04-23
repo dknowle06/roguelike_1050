@@ -1,6 +1,6 @@
 """
 David Knowles 
-4/22/2025
+4/23/2025
 File that stores the main gameloop
 
 This is like if balatro was a dungeon crawler and also made by someone who doesn't really understand game design but has played way too much balatro
@@ -19,7 +19,7 @@ import sys # used to grab command line arguments
 import time # used for random seed generation and printing load times 
 
 from common_funcs import *
-from room_handler import room_handler
+from room_handler import *
 
 DEBUG = True
 
@@ -110,4 +110,4 @@ if __name__ == "__main__":
         current_room = dungeon_map.get_node_from_id(player_position).get_data()
         room_id = current_room.get_id()
 
-        room_handler(current_room, player_obj)
+        room_handler(current_room, player_obj, mpgt.dungeon_map_to_string(dungeon_map, player_position))
