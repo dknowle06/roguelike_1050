@@ -114,14 +114,19 @@ if __name__ == "__main__":
 
         room_handler(current_room, player_obj, mpgt.dungeon_map_to_string(dungeon_map, player_position))
 
-        # NOTE for me!! seed `123` will be good for testing, it seems
+        # NOTE for me!! seed `123` and `3435534953` and `607007593` will be good for testing, it seems
         gathering_input = True
         # sets up an array of room objects, this array will contain the next availabe rooms that the player can traverse to
-        next_rooms = [x.get_data() for x in dungeon_map.get_node_from_id(room_id).get_children()]
+        next_rooms = [x.get_data() for x in dungeon_map.get_node_from_id(player_position).get_children()]
 
-        print(next_rooms)
-
+        # gathers input, will end when the user chooses to continue to the next room
         while gathering_input:
+            print("What do you want to do?")
+
             user_input = input_validation("",VALID_ACTION, lambda a: a.split()[0] in NAVIGATION_COMMS)
 
+            gathering_input = not input_handler(user_input, next_rooms, player_obj, mpgt.dungeon_map_to_string(dungeon_map, player_position))
             
+        # the second element in `next_rooms` will be updated by `gathering_input`
+        # this element will be a value used to shift the player's position into the room they chose 
+        player_position += next_rooms[1]

@@ -138,6 +138,48 @@ def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
 
     # YOU THERE! NOTE!!! LOOK HERE AND FINISH THIS UP!!!!!!!!!!!!!!!!!!!!!
     elif command in {"NEXT", "CONTINUE"}:
+        if len(elements) == 1:
+            print("\nYou continue on to the next room...\n")
+
+            elements.append(1)
+
+        elif len(elements) == 2:
+            print("\nYou come across two doors, which one will you enter?\n\t[1] [2]")
+
+            room_num = int(input_validation("", VALID_ACTION, lambda a: a.split()[0] in {"1", "2"}))
+            room_ref = elements[room_num - 1]
+
+            print(f"\nYou walk through the {"first" if room_num == 1 else "second"} door.\n")
+
+            # turn the room list into a list that only contains the room the player chose 
+
+            # empties the list while preserving the reference
+            for i in range(2):
+                elements.pop(0)
+
+            elements.append(room_ref)
+
+            # add an id shifter
+            elements.append(1 if room_num == 1 else 3)
+
+        elif len(elements) == 3:
+            print("\nYou come across three doors, which one will you enter?\n\t[1] [2] [3]")
+
+            room_num = int(input_validation("", VALID_ACTION, lambda a: a.split()[0] in {"1", "2", "3"}))
+            room_ref = elements[room_num - 1]
+
+            # nested ternary operator... ewwww
+            print(f"\nYou walk through the {"first" if room_num == 1 else "second" if room_num == 2 else "third"} door.\n")
+
+            # empties the list while preserving the reference
+            for i in range(3):
+                elements.pop(0)
+
+            elements.append(room_ref)
+
+            # add an id shifter
+            elements.append(1 if room_num == 1 else 3 if room_num == 2 else 5)
+
         return True
 
 

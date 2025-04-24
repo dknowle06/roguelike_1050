@@ -1,6 +1,6 @@
 """
 David Knowles
-4/21/2025
+4/24/2025
 
 Contains functions and classes used for generating maps and storing rooms 
 Stores the Encounter and the Room class 
@@ -123,6 +123,7 @@ class Encounter:
         # - define fountain
 
         self.elements = []
+        self.treasure = []
         
         if (room_id in {ROOM_TYPES.FIGHT, ROOM_TYPES.BOSS, ROOM_TYPES.MINIBOSS}):
             self.elements = Encounter.enemy_generator(room_id)
@@ -130,7 +131,7 @@ class Encounter:
             # adds a bonus item to be awarded to the player upon clearing a miniboss/boss room 
             if (room_id in {ROOM_TYPES.BOSS, ROOM_TYPES.MINIBOSS}):
                 reward_item = Encounter.item_generator(room_id)
-                self.elements.append(reward_item)
+                self.treasure.append(reward_item)
                 
         elif (room_id in {ROOM_TYPES.TREASURE, ROOM_TYPES.SHOP}):
             self.elements = Encounter.item_generator(room_id)
