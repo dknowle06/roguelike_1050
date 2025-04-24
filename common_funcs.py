@@ -1,5 +1,5 @@
 """
-4/23/2025
+4/24/2025
 David Knowles 
 
 File that stores common functions that are used by multiple files. 
@@ -10,8 +10,8 @@ Also stores the sets that contains valid commands
 
 # sets that store valid player commands 
 # `EVERYDAY_COMMS` shouldn't be used, it's only here to be unioned to create the attack and shop command sets 
-EVERYDAY_COMMS = {"INVENTORY", "EQUIP", "USE", "MAP"}
-ATTACK_COMMS = EVERYDAY_COMMS | {"CHECK", "ATTACK"}
+EVERYDAY_COMMS = {"INVENTORY", "MAP", "SELF"}
+ATTACK_COMMS = EVERYDAY_COMMS | {"CHECK", "ATTACK", "EQUIP", "USE"}
 SHOP_COMMS = EVERYDAY_COMMS | {"BUY", "SELL"}
 NAVIGATION_COMMS = EVERYDAY_COMMS | {"NEXT", "CONTINUE"} # next and continue will do the same thing 
 

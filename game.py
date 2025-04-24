@@ -1,6 +1,6 @@
 """
 David Knowles 
-4/23/2025
+4/24/2025
 File that stores the main gameloop
 
 This is like if balatro was a dungeon crawler and also made by someone who doesn't really understand game design but has played way too much balatro
@@ -65,6 +65,8 @@ if __name__ == "__main__":
         for key in dungeon_map.parent_dictionary:
             print(dungeon_map.parent_dictionary[key].get_data().get_encounter().elements)
 
+        print(f"DUNGEON MAP LENGTH = {len(dungeon_map)}")
+
     print(f"Game setup completed in {time.time() - start_time} seconds.")
 
     # prints title 
@@ -111,3 +113,15 @@ if __name__ == "__main__":
         room_id = current_room.get_id()
 
         room_handler(current_room, player_obj, mpgt.dungeon_map_to_string(dungeon_map, player_position))
+
+        # NOTE for me!! seed `123` will be good for testing, it seems
+        gathering_input = True
+        # sets up an array of room objects, this array will contain the next availabe rooms that the player can traverse to
+        next_rooms = [x.get_data() for x in dungeon_map.get_node_from_id(room_id).get_children()]
+
+        print(next_rooms)
+
+        while gathering_input:
+            user_input = input_validation("",VALID_ACTION, lambda a: a.split()[0] in NAVIGATION_COMMS)
+
+            

@@ -1,5 +1,5 @@
 """
-4/23/2025
+4/24/2025
 David Knowles
 
 File that handles room actions
@@ -24,6 +24,8 @@ class BadInputException(Exception):
         return f"{self.msg}"
 
 
+# NOTE: Sets used to check for validity of player commands found in `common_funcs.py`
+
 # function used to handle input, called by `room_handler`
 # returns a boolean value to let the program know if the turn is over, in the event of being in a battle
 # player should be a player object 
@@ -33,10 +35,11 @@ def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
     # second element should be the command parameter 
     parsed_input = user_input.upper().split()
 
-    if len(parsed_input) < 2 and parsed_input[0] not in {"INVENTORY", "NEXT", "CONTINUE", "MAP"}:
+    if len(parsed_input) < 2 and parsed_input[0] not in {"INVENTORY", "NEXT", "CONTINUE", "MAP", "SELF"}:
         raise BadInputException()
 
     command = parsed_input[0]
+    parameter = None
 
     try:
         parameter = int(parsed_input[1]) if len(parsed_input) > 1 else 0
@@ -127,6 +130,15 @@ def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
         print(f"\nDungeon map:\n{map_str}\n")
 
         return False
+    
+    elif command == "SELF":
+        newline()
+        print(player)
+        newline()
+
+    # YOU THERE! NOTE!!! LOOK HERE AND FINISH THIS UP!!!!!!!!!!!!!!!!!!!!!
+    elif command in {"NEXT", "CONTINUE"}:
+        return True
 
 
 
@@ -196,5 +208,8 @@ def room_handler(room, player, map_str:str):
 
                 print(f"You found {gold_dropped} gold!")
                 print(f"You gained {exp_dropped} experience points!")
+
+                player.add_gold(gold_dropped)
+                player.add_exp(exp_dropped)
 
                 newline()

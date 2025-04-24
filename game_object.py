@@ -1,5 +1,5 @@
 # David Knowles
-# 4/23/2025
+# 4/24/2025
 # stores parent class for game objects
 # stores classes for enemies and items 
 
@@ -44,7 +44,8 @@ class Game_Object:
     def stats_str(self) -> str:
         stats_str = ""
         for key in self.stats:
-            stats_str += f"{key}: {self.stats[key]}\n"
+            # ternary operator helps to properly format floating point values when converting stats to a string 
+            stats_str += f"{key}: {self.stats[key]}\n" if type(self.stats[key]) != float else f"{key}: {self.stats[key]:.1f}\n"
 
         return stats_str[:-1]
 

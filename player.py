@@ -1,6 +1,6 @@
 """
 David Knowles 
-4/23/2025
+4/24/2025
 Class containing player information
 """
 
@@ -79,10 +79,10 @@ class Player:
 
 
     def add_exp(self, exp:int) -> None:
-        self.exp += exp
+        self.exp_total += exp
 
-        num_levels_gained = self.exp // EXP_IN_A_LEVEL 
-        self.exp -= (EXP_IN_A_LEVEL * num_levels_gained)
+        num_levels_gained = self.exp_total // EXP_IN_A_LEVEL 
+        self.exp_total -= (EXP_IN_A_LEVEL * num_levels_gained)
 
         self.level += num_levels_gained
 
