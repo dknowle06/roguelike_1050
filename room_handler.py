@@ -1,5 +1,5 @@
 """
-4/24/2025
+4/25/2025
 David Knowles
 
 File that handles room actions
@@ -136,7 +136,7 @@ def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
         print(player)
         newline()
 
-    # YOU THERE! NOTE!!! LOOK HERE AND FINISH THIS UP!!!!!!!!!!!!!!!!!!!!!
+    # commands that allow for navigating rooms!! 
     elif command in {"NEXT", "CONTINUE"}:
         if len(elements) == 1:
             print("\nYou continue on to the next room...\n")
@@ -200,10 +200,13 @@ def room_handler(room, player, map_str:str):
 
         LOOK HERE FOR CODE DEFINING THESE ENCOUNTERS!!!!!!!!!!!!!!!!!!!!!
         """
-        print(f"You enter a room, and get ambushed by some enemies!\n")
 
         enemies = room.get_encounter().get_elements()
         enemy_names = ""
+
+        # prints the miniboss or boss's name if this is a boss encounter
+        # else, just print "some enemies"
+        print(f"You enter a room, and get ambushed by {"some enemies" if room_id == ROOM_TYPES.FIGHT else f"the {enemies[0].get_name()}"}!\n")
         
         # used to determine gold and exp obtained at the end of an encounter 
         enemies_archive = copy.deepcopy(enemies)
