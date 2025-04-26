@@ -196,6 +196,38 @@ def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
         print(f"\n{player.inventory[parameter - 1]}\n")
 
         return False
+    
+    # uses the consumable item and then removes it from the player's inventory
+    elif command == "USE":
+        if parameter not in range(1, len(player.inventory) + 1):
+            raise BadInputException()
+        # raises an exception if the player attempts to use something that isn't a consumable
+        elif player.inventory[parameter - 1].item_type.upper() != "CONSUMABLE":
+            raise BadInputException("Can only use consumables!\n")
+        
+        index = parameter - 1
+
+        newline()
+        # passes in the player object and elements, which should be a list of enemies
+        print(f"You used {player.inventory[index].get_name()}!")
+        # on_use should return a boolean, which determines if the item's use ends the round
+        continue_round = player.inventory[index].on_use(player, elements)
+        newline()
+
+        player.inventory.pop(index)
+
+        # fail safe, just in case the consumable function doesn't return a boolean
+        if type(continue_round) != bool:
+            # despite what it may seem, this actually ends the round
+            # i know, confusing naming!! sorry!!
+            continue_round = True
+
+        return continue_round
+    
+    # failsafe
+    # raises an exception if this function is called with a command that isn't caught by any of the above cases 
+    else:
+        raise BadInputException()
 
 
 

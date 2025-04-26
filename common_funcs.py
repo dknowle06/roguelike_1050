@@ -17,6 +17,10 @@ NAVIGATION_COMMS = EVERYDAY_COMMS | {"NEXT", "CONTINUE"} # next and continue wil
 
 VALID_ACTION = "Please choose a valid action!\n"
 
+# list of expected player stats defined in `player_stats.txt`
+# used to print the player object and when leveling up the player 
+DEFAULT_STAT_LIST = ["Attack", "Special Attack", "Defense", "Special Defense"]
+
 # prints `num` newlines
 def newline(num:int = 1):
     for i in range(num):

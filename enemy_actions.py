@@ -1,6 +1,6 @@
 """
 David Knowles
-4/8/2025
+4/26/2025
 
 Contains functions that return `Enemy_Action` objects
 These objects contain information about stat boosts, healing, damage, etc. 
@@ -50,11 +50,6 @@ class Enemy_Action:
         self.stat_boosts = {}
 
         self.damage_type = damage_type
-        
-        for key, value in kwargs.items():
-            # using the type casts i define in `Stat_Boost` here instead of normal getters or setters
-            # probably not as clear in the code for what it does but it's a little more concise i think 
-            self.stat_boosts[key] = value
 
     # string :-)
     def __str__(self) -> str:

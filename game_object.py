@@ -7,6 +7,7 @@ stores classes for enemies and items
 """
 
 from enemy_actions import ENEMY_ACTIONS_DICT as EAD
+from fx_consumable import CONSUMABLE_FX_DICT as CFXD
 from random import randint
 # used for returning an object by value instead of by reference 
 import copy
@@ -153,8 +154,9 @@ class Item(Game_Object):
 
         self.on_use = None
 
+        # sets the on use command for consumable items
         if self.item_type == "consumable":
-            self.on_use = safe_assign(item_dict, "On Use")
+            self.on_use = CFXD[safe_assign(item_dict, "On Use")]
 
     # used to denote whether or not the item is contained within the player's inventory 
     def set_player_ownership(self, player_owns:bool) -> None:
@@ -172,6 +174,9 @@ class Item(Game_Object):
         # this bool expression is kinda gross and icky but whatever 
         if not self.player_owned and "Price" in self.stats and not self.is_treasure:
             output_str += f"\n${self.stats["Price"]}"
+
+        # displays the item type
+        output_str += f"\nItem Type: {self.item_type.title()}"
 
         # displays weapon stats if the item is a weapon
         if self.item_type == "weapon":

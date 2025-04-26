@@ -7,13 +7,10 @@ Class containing player information
 from dict_parser import dict_parser
 from game_object import Item
 from common_funcs import list_to_string
+from common_funcs import DEFAULT_STAT_LIST
 
 # self explanatory
 EXP_IN_A_LEVEL = 50
-
-# list of expected player stats defined in `player_stats.txt`
-# used to print the player object and when leveling up the player 
-DEFAULT_STAT_LIST = ["Attack", "Special Attack", "Defense", "Special Defense"]
 
 class Player:
     # set of all possible player actions
@@ -115,3 +112,9 @@ class Player:
             for stat_key in DEFAULT_STAT_LIST:
                 self.stats[stat_key] += stat_adjuster
                 print(f"You gained {stat_adjuster:.1f} {stat_key}!")
+
+    def add_item_from_str(self, item_str:str) -> None:
+        item = Item.get_item_from_dict(item_str)
+
+        item.set_player_ownership(True)
+        self.inventory.append(item)

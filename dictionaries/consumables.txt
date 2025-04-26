@@ -5,3 +5,10 @@
     price:3
     on_use:"heal_cs"
 }
+{
+    name:"Gros Michel"
+    description:"A banana that radiates with power. On consumption, permanently boosts a random stat by 1.5, and has a 1 in 6 chance of getting destroyed."
+    type:"consumable"
+    price:5
+    on_use:"gros_michel"
+}
