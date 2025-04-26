@@ -112,16 +112,24 @@ class Encounter:
     def item_generator(room_type:int = 0) -> list:
         item_list = []
 
+        # gives 5 items for a shop
+        # gives 2 items for anything else (in practice, this will be for miniboss encounters and treasure rooms)
+        num_items = 5 if room_type == ROOM_TYPES.SHOP else 2
+
+        for i in range(num_items):
+            item_list.append(copy.deepcopy(Encounter.item_data[randint(0, len(Encounter.item_data) - 1)]))
+
+
         return item_list
 
 
     def __init__(self, room_id:int = 0):
         # TODO:
-        # - create a function that generates enemies, will be reused for fight, boss, and miniboss
+        # - create a function that generates enemies, will be reused for fight, boss, and miniboss (DONE!)
 
-        # - create a function that generates a set of items, will be reused for treasure and shop, as well as minibosses and bosses
+        # - create a function that generates a set of items, will be reused for treasure and shop, as well as minibosses
 
-        # - define fountain
+        # - define fountain (DONE!)
 
         self.elements = []
         self.treasure = []
@@ -130,9 +138,8 @@ class Encounter:
             self.elements = Encounter.enemy_generator(room_id)
 
             # adds a bonus item to be awarded to the player upon clearing a miniboss/boss room 
-            if (room_id in {ROOM_TYPES.BOSS, ROOM_TYPES.MINIBOSS}):
-                reward_item = Encounter.item_generator(room_id)
-                self.treasure.append(reward_item)
+            if (room_id in {ROOM_TYPES.MINIBOSS}):
+                self.treasure = Encounter.item_generator(room_id)
                 
         elif (room_id in {ROOM_TYPES.TREASURE, ROOM_TYPES.SHOP}):
             self.elements = Encounter.item_generator(room_id)
@@ -146,6 +153,9 @@ class Encounter:
 
     def get_elements(self) -> list:
         return self.elements
+
+    def get_treasure(self) -> list:
+        return self.treasure
 
     # function used for testing
     # displays the elements within an encounter

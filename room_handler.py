@@ -16,6 +16,17 @@ from player import Player
 import copy
 from common_funcs import *
 
+"""
+Stores the path the player is on
+
+Current Path values:
+0 = not on a split path, bottom path if 2-way or 3-way
+1 = top if 2-way, middle if 3-way
+2 = top if 3-way
+"""
+current_path = 0
+num_split_path_rooms = 0
+
 
 # exception raised when user's input is invalid
 # there isn't much functionally different between this and the exception superclass 
@@ -35,7 +46,9 @@ class BadInputException(Exception):
 # function used to handle input, called by `room_handler`
 # returns a boolean value to let the program know if the turn is over, in the event of being in a battle
 # player should be a player object 
-def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
+def input_handler(user_input:str, elements:list, player, map_str:str, map_obj) -> bool:
+    global current_path
+    global num_split_path_rooms
     # parses user input into a list
     # first element should be the command
     # second element should be the command parameter 
@@ -149,6 +162,9 @@ def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
 
             elements.append(1)
 
+            if current_path == 0:
+                num_split_path_rooms = 0
+
         elif len(elements) == 2:
             print("\nYou come across two doors, which one will you enter?\n\t[1] [2]")
 
@@ -168,6 +184,8 @@ def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
             # add an id shifter
             elements.append(1 if room_num == 1 else 3)
 
+            current_path = 0 if room_num == 2 else 1
+
         elif len(elements) == 3:
             print("\nYou come across three doors, which one will you enter?\n\t[1] [2] [3]")
 
@@ -185,6 +203,20 @@ def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
 
             # add an id shifter
             elements.append(1 if room_num == 1 else 3 if room_num == 2 else 5)
+
+            current_path = 0 if room_num == 3 else 1 if room_num == 2 else 2
+
+        if num_split_path_rooms == 2:
+            elements[1] += 2 * current_path
+            current_path = 0
+
+        if num_split_path_rooms == 1 or (len(elements) > 1 and num_split_path_rooms < 2):
+            num_split_path_rooms += 1
+
+        if num_split_path_rooms == 0 and current_path != 0:
+            num_split_path_rooms = 1
+
+        print(f"current_path = {current_path}\nnum_split_path_rooms = {num_split_path_rooms}\n")
 
         return True
     
@@ -233,7 +265,7 @@ def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
 
 # room should be a room object 
 # player should be a player object
-def room_handler(room, player, map_str:str):
+def room_handler(room, player, map_str:str, map_obj):
     room_id = room.get_id()
 
     room_loop = True
@@ -273,7 +305,7 @@ def room_handler(room, player, map_str:str):
 
                 # if an exception isn't raised, we know the player's input is done! 
                 try:
-                    enemy_turn = input_handler(user_action, enemies, player, map_str)
+                    enemy_turn = input_handler(user_action, enemies, player, map_str, map_obj)
 
                     gathering_input = False
                 except BadInputException as e:
@@ -304,6 +336,15 @@ def room_handler(room, player, map_str:str):
                 player.add_gold(gold_dropped)
                 player.add_exp(exp_dropped)
 
+                if room_id == ROOM_TYPES.MINIBOSS:
+                    treasure = room.get_encounter().get_treasure()
+
+                    # hard coded to give 2 items from the treasure list
+                    print(f"You found a(n) {treasure[0].get_name()} and a(n) {treasure[1].get_name()}!")
+
+                    player.add_item_from_str(treasure[0].get_name())
+                    player.add_item_from_str(treasure[1].get_name())
+
                 newline()
     
     # heals the player,
@@ -324,3 +365,19 @@ def room_handler(room, player, map_str:str):
         newline()
 
         player.add_item_from_str("cherry soda")
+
+    # gives player the treasure,
+    # and then kicks them out!! 
+    elif room_id == ROOM_TYPES.TREASURE:
+        newline()
+
+        print("You enter the room, and see a treasure chest in the middle of the room.")
+        print("You open the treasure chest:")
+
+        treasure_ref = room.get_encounter().get_elements()
+
+        for t in treasure_ref:
+            print(f"\tYou found a(n) {t.get_name()}!")
+            player.add_item_from_str(t.get_name())
+
+        newline()

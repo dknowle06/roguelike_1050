@@ -63,7 +63,7 @@ if __name__ == "__main__":
             print(f"{key}:{dungeon_map.parent_dictionary[key]}")
 
         for key in dungeon_map.parent_dictionary:
-            print(dungeon_map.parent_dictionary[key].get_data().get_encounter().elements)
+            print(dungeon_map.parent_dictionary[key].get_data().get_encounter().elements + dungeon_map.parent_dictionary[key].get_data().get_encounter().treasure)
 
         print(f"DUNGEON MAP LENGTH = {len(dungeon_map)}")
 
@@ -112,7 +112,7 @@ if __name__ == "__main__":
         current_room = dungeon_map.get_node_from_id(player_position).get_data()
         room_id = current_room.get_id()
 
-        room_handler(current_room, player_obj, mpgt.dungeon_map_to_string(dungeon_map, player_position))
+        room_handler(current_room, player_obj, mpgt.dungeon_map_to_string(dungeon_map, player_position), dungeon_map)
 
         # NOTE for me!! seed `123` and `3435534953` and `607007593` and `3313003888` will be good for testing, it seems
         gathering_input = True
@@ -125,7 +125,7 @@ if __name__ == "__main__":
 
             user_input = input_validation("",VALID_ACTION, lambda a: a.split()[0] in NAVIGATION_COMMS)
 
-            gathering_input = not input_handler(user_input, next_rooms, player_obj, mpgt.dungeon_map_to_string(dungeon_map, player_position))
+            gathering_input = not input_handler(user_input, next_rooms, player_obj, mpgt.dungeon_map_to_string(dungeon_map, player_position), dungeon_map)
             
         # the second element in `next_rooms` will be updated by `gathering_input`
         # this element will be a value used to shift the player's position into the room they chose 
