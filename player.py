@@ -58,6 +58,9 @@ class Player:
 
     def get_stat(self, key:str):
         return self.stats[key]
+    
+    def get_level(self) -> int:
+        return self.level
 
     # sets the player's equipped weapon
     # has no checks to ensure the player is equipping a weapon, that is something that the input handler should do 

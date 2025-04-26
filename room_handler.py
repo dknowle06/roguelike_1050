@@ -307,6 +307,20 @@ def room_handler(room, player, map_str:str):
                 newline()
     
     # heals the player,
+    # gives them a cherry soda,
     # and then kicks them out!!
     elif room_id == ROOM_TYPES.FOUNTAIN:
-        pass 
+        player_level = player.get_level()
+        healing = 5.0 * player_level
+
+        print("\nYou stumble upon a room with an ornate fountain filled with cherry soda in the middle.")
+        print(f"You take a drink from the fountain, and are healed for {healing:.1f} HP!")
+
+        player.get_stats()["Hp"] += healing
+
+        print(f"You now have {player.get_stats()["Hp"]:.1f} HP!")
+
+        print("You fill a bottle with some cherry soda and take it for the road.")
+        newline()
+
+        player.add_item_from_str("cherry soda")
