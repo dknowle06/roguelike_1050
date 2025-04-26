@@ -40,7 +40,7 @@ class Enemy_Action:
     # healing and damage are self explanatory
     # **kwargs contains all stat boosts
     # wow an actual use for kwargs, CRAZY
-    def __init__(self, healing:float, damage:float, enemy_name:str, attack_verb:str, damage_type:int = PHYSICAL, **kwargs):
+    def __init__(self, healing:float, damage:float, enemy_name:str, attack_verb:str, damage_type:int = PHYSICAL):
         self.healing = healing
         self.damage = damage
 
@@ -103,7 +103,7 @@ def foo(stats_dict:dict, enemy_name:str):
     return `Enemy_Action`
 """
 
-# healing, damage, enemy name, attack verb, status effects (TODO), stat buffs
+# healing, damage, enemy name, attack verb
 
 
 def flop(stats_dict:dict, enemy_name:str):
