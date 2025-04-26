@@ -74,7 +74,7 @@ class Encounter:
         print("Bosses initialized!")
         
         # initialize items
-        item_temp = dict_parser("dictionaries/items.txt", ":", True)
+        item_temp = dict_parser("dictionaries/weapons.txt", ":", True)
         Encounter.item_data = [Item(x) for x in item_temp]
 
         # add items to item dictionary
