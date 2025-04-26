@@ -1,6 +1,6 @@
 """
 David Knowles
-4/24/2025
+4/26/2025
 
 Contains functions and classes used for generating maps and storing rooms 
 Stores the Encounter and the Room class 
@@ -75,6 +75,7 @@ class Encounter:
         
         # initialize items
         item_temp = dict_parser("dictionaries/weapons.txt", ":", True)
+        item_temp += dict_parser("dictionaries/consumables.txt", ":", True)
         Encounter.item_data = [Item(x) for x in item_temp]
 
         # add items to item dictionary

@@ -72,7 +72,7 @@ def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
             raise BadInputException()
         # raises an exception if the player attempts to equip something that isn't a weapon
         elif player.inventory[parameter - 1].item_type.upper() != "WEAPON":
-            raise BadInputException("Can only equip weapons!")
+            raise BadInputException("Can only equip weapons!\n")
 
         player.set_equipped_weapon(parameter - 1)
 
@@ -187,6 +187,15 @@ def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
             elements.append(1 if room_num == 1 else 3 if room_num == 2 else 5)
 
         return True
+    
+    # equivalent of CHECK, but for items
+    elif command == "ITEM":
+        if parameter not in range(1, len(player.inventory) + 1):
+            raise BadInputException()
+        
+        print(f"\n{player.inventory[parameter - 1]}\n")
+
+        return False
 
 
 

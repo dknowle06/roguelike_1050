@@ -1,0 +1,7 @@
+{
+    name:"Cherry Soda"
+    description:"A bottle of artifical-tasting cherry soda. On consumption, heals 10.0 HP."
+    type:"consumable"
+    price:3
+    on_use:"heal_cs"
+}

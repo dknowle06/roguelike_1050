@@ -10,7 +10,7 @@ Also stores the sets that contains valid commands
 
 # sets that store valid player commands 
 # `EVERYDAY_COMMS` shouldn't be used, it's only here to be unioned to create the attack and shop command sets 
-EVERYDAY_COMMS = {"INVENTORY", "MAP", "SELF"}
+EVERYDAY_COMMS = {"INVENTORY", "MAP", "SELF", "ITEM"}
 ATTACK_COMMS = EVERYDAY_COMMS | {"CHECK", "ATTACK", "EQUIP", "USE"}
 SHOP_COMMS = EVERYDAY_COMMS | {"BUY", "SELL"}
 NAVIGATION_COMMS = EVERYDAY_COMMS | {"NEXT", "CONTINUE"} # next and continue will do the same thing 

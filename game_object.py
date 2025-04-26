@@ -1,7 +1,10 @@
-# David Knowles
-# 4/24/2025
-# stores parent class for game objects
-# stores classes for enemies and items 
+"""
+David Knowles
+4/26/2025
+
+stores parent class for game objects
+stores classes for enemies and items 
+"""
 
 from enemy_actions import ENEMY_ACTIONS_DICT as EAD
 from random import randint
@@ -113,6 +116,8 @@ Artifacts - apply passive bonuses while in the inventory, either straight stat b
 Consumables - Items that are consumed upon use
 """
 
+# in retrospect, each of the item types probably should be an ineherited class
+# but the way i do it works. kind of. sorry to the graders if you have to read this class definition.
 class Item(Game_Object):
 
     # dictionary that pairs item names to their object definition
@@ -140,11 +145,16 @@ class Item(Game_Object):
 
         # set up item stats
         for key in item_dict:
-            if not key in {"Name", "Description", "Type"}:
+            if not key in {"Name", "Description", "Type", "On Use"}:
                 Game_Object.add_stat(self, key, item_dict[key])
 
         self.player_owned = False
         self.is_treasure = False
+
+        self.on_use = None
+
+        if self.item_type == "consumable":
+            self.on_use = safe_assign(item_dict, "On Use")
 
     # used to denote whether or not the item is contained within the player's inventory 
     def set_player_ownership(self, player_owns:bool) -> None:
@@ -162,5 +172,9 @@ class Item(Game_Object):
         # this bool expression is kinda gross and icky but whatever 
         if not self.player_owned and "Price" in self.stats and not self.is_treasure:
             output_str += f"\n${self.stats["Price"]}"
+
+        # displays weapon stats if the item is a weapon
+        if self.item_type == "weapon":
+            output_str += f"\nAttack: {self.stats["Attack"]}\nDamage Type: {self.stats["Weapon Type"].title()}"
 
         return output_str
