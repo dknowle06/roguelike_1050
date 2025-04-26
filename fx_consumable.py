@@ -6,6 +6,7 @@ contains actions for consumable items
 """
 
 from common_funcs import DEFAULT_STAT_LIST
+from common_funcs import newline
 # NOTE! randint is inclusive from a to b
 from random import randint 
 
@@ -29,6 +30,8 @@ def foo(player, enemies:list) -> bool:
 END_TURN = True
 CONTINUE_TURN = False
 
+
+# used by cherry soda
 def heal_cs(player, enemies:list) -> bool:
     player.get_stats()["Hp"] += 10.0
 
@@ -36,6 +39,8 @@ def heal_cs(player, enemies:list) -> bool:
 
     return END_TURN
 
+
+# used by gros michel
 def gros_michel(player, enemies:list) -> bool:
     # picks the index for which stat to upgrade
     stat_id = randint(0, len(DEFAULT_STAT_LIST) - 1)
@@ -54,8 +59,40 @@ def gros_michel(player, enemies:list) -> bool:
 
     return CONTINUE_TURN
 
+
+# used by c4
+def explode_c4(player, enemies:list) -> bool:
+    for i in range(len(enemies)):
+        # DRY? I don't even know her!
+        enemies[i].take_damage(20)
+        print(f"You dealt 20 piercing damage to {enemies[i].get_name()} [{i + 1}]!")
+
+    newline()
+
+    defeated_enemy_indexes = []
+
+    for i in range(len(enemies)):
+        print(f"{enemies[i].get_name()} [{i + 1}] now has {enemies[i].get_stat("Hp"):.1f} Hp.")
+
+        # removes enemy from elements list if the enemy is defeated 
+        if enemies[i].get_stat("Hp") <= 0:
+            print(f"You defeated {enemies[i].get_name()} [{i + 1}]!")
+
+            defeated_enemy_indexes.append(i)
+
+    for i in range(len(defeated_enemy_indexes) - 1, -1, -1):
+        enemies.pop(i)
+
+    # TODO: Player self-damage. Will be added when i add a method for the player to take damage in the player class 
+
+    return END_TURN
+
+
+
+
 # used to assign functions to consumables
 CONSUMABLE_FX_DICT = {
     "heal_cs":heal_cs,
-    "gros_michel":gros_michel
+    "gros_michel":gros_michel,
+    "explode_c4":explode_c4
 }

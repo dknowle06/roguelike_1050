@@ -12,3 +12,10 @@
     price:5
     on_use:"gros_michel"
 }
+{
+    name:"C4"
+    description:"A high powered explosive. Arming code is 7355608. On consumption, deal 20 piercing damage to all enemies, and deal 5 piercing self-damage."
+    type:"consumable"
+    price:5
+    on_use:"explode_c4"
+}
