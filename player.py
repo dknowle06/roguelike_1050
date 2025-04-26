@@ -1,6 +1,6 @@
 """
 David Knowles 
-4/24/2025
+4/26/2025
 Class containing player information
 """
 
@@ -8,7 +8,12 @@ from dict_parser import dict_parser
 from game_object import Item
 from common_funcs import list_to_string
 
+# self explanatory
 EXP_IN_A_LEVEL = 50
+
+# list of expected player stats defined in `player_stats.txt`
+# used to print the player object and when leveling up the player 
+DEFAULT_STAT_LIST = ["Attack", "Special Attack", "Defense", "Special Defense"]
 
 class Player:
     # set of all possible player actions
@@ -63,7 +68,19 @@ class Player:
         self.equipped_weapon = self.inventory[idx]
 
     def __str__(self) -> str:
-        return f"You are {self.name}.\nYou are level {self.level} and have {self.exp_total} experience points.\nYou currently have a(n) {self.equipped_weapon.get_name()} equipped.\nYou have {self.gold} gold."
+        # ii split output into a few seperate lines just because this fstring's length was getting ridiculous 
+        output = f"You are {self.name}.\nYou are level {self.level} and have {self.exp_total} experience points.\nYou currently have a(n) {self.equipped_weapon.get_name()} equipped."
+        output += f"\nYou have {self.gold} gold.\nYou have {self.stats["Hp"]:.1f} HP remaining.\nYou have "
+
+        # adds the player's stats
+        counter = 1
+        for stat_key in DEFAULT_STAT_LIST:
+            # ternary operator makes it so the last stat is preceded by "and"
+            output += f"{self.stats[stat_key]:.1f} {stat_key}, " if counter < len(DEFAULT_STAT_LIST) else f"and {self.stats[stat_key]:.1f} {stat_key}."
+
+            counter += 1
+
+        return output
 
     # converts the inventory array into a string that looks prettier for printing 
     def inventory_as_str(self) -> str:
@@ -87,6 +104,14 @@ class Player:
         self.level += num_levels_gained
 
         if num_levels_gained > 0:
-            print(f"You gained {num_levels_gained} levels!")
+            print(f"You gained {num_levels_gained} level(s)!")
 
-            # TODO: Update stats on level up
+            # adds 5 HP for each level gained
+            self.stats["Hp"] += num_levels_gained * 5.0
+            print(f"You gained {num_levels_gained * 5.0:.1f} HP!")
+
+            # add 2 to all other stats for each level gained 
+            stat_adjuster = num_levels_gained * 2.0
+            for stat_key in DEFAULT_STAT_LIST:
+                self.stats[stat_key] += stat_adjuster
+                print(f"You gained {stat_adjuster:.1f} {stat_key}!")

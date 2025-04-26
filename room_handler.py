@@ -1,8 +1,14 @@
 """
-4/25/2025
+4/26/2025
 David Knowles
 
 File that handles room actions
+BadInputException is an exception raised when the input_handler function is fed bad input
+input_handler chooses what to do based off what the player inputs 
+room_handler handles calls to input_handler based off of the room type 
+
+This file is, unfortunately, probably going to be the largest file for this program.
+It would've been smart of me to split this into a couple different files, but it's too late for that now. 
 """
 
 from mapgeneration import *
@@ -258,3 +264,8 @@ def room_handler(room, player, map_str:str):
                 player.add_exp(exp_dropped)
 
                 newline()
+    
+    # heals the player,
+    # and then kicks them out!!
+    elif room_id == ROOM_TYPES.FOUNTAIN:
+        pass 

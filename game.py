@@ -1,6 +1,6 @@
 """
 David Knowles 
-4/24/2025
+4/26/2025
 File that stores the main gameloop
 
 This is like if balatro was a dungeon crawler and also made by someone who doesn't really understand game design but has played way too much balatro
@@ -114,7 +114,7 @@ if __name__ == "__main__":
 
         room_handler(current_room, player_obj, mpgt.dungeon_map_to_string(dungeon_map, player_position))
 
-        # NOTE for me!! seed `123` and `3435534953` and `607007593` will be good for testing, it seems
+        # NOTE for me!! seed `123` and `3435534953` and `607007593` and `3313003888` will be good for testing, it seems
         gathering_input = True
         # sets up an array of room objects, this array will contain the next availabe rooms that the player can traverse to
         next_rooms = [x.get_data() for x in dungeon_map.get_node_from_id(player_position).get_children()]
