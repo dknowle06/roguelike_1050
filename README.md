@@ -11,6 +11,10 @@ For example:
 
 When running the game, all files posted in the repository are necessary to have, except for `test_dp.py`, `test_mg.py`, and `test_player.py`, as well as any files contained under `dictionaries/testing`. All other dictionary `.txt` files must be kept within the `dictionaries` folder.
 
+**NOTE:**
+
+The map printing uses special unicode characters, which may not display on certain terminals. I didn't have any issues with the characters not showing up when I ran the program through WSL on VSCode, but when I ran it through WSL normally I encountered issues. I would assume there are also issues using the regular Windows Command Prompt, but I haven't tested it. For the best experience possible, run the program on VSCode's integrated terminal (with WSL, if issues are still encountered) if possible.
+
 ## Player Actions
 
 When playing the game, you must type in these commands in order to progress in the game:
@@ -56,6 +60,22 @@ These are actions that can only be performed while navigating between rooms.
 `NEXT`: Moves the player to the next room. If the player comes across a split path, they will be prompted to pick which room to continue to.
 
 `CONTINUE`: Does the exact same thing as `NEXT`
+
+## Map Key
+
+`🗡`: Enemy Encounter
+
+`♛`: Boss Encounter
+
+`⚠`: Miniboss Encounter
+
+`✗`: Treasure Room
+
+`$`: Shop
+
+`♡`: Healing Fountain
+
+`O`: Room the Player is currently at.
 
 ## General Info
 
