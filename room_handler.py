@@ -40,7 +40,7 @@ num_split_rooms = 0
 # function used to handle input, called by `room_handler`
 # returns a boolean value to let the program know if the turn is over, in the event of being in a battle
 # player should be a player object 
-def input_handler(user_input:str, elements:list, player, map_str:str, map_obj) -> bool:
+def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
     # globals ):
     # needed to fix a bug with room navigation when it comes to exiting split paths 
     global on_split_path
@@ -53,7 +53,7 @@ def input_handler(user_input:str, elements:list, player, map_str:str, map_obj) -
     # second element should be the command parameter 
     parsed_input = user_input.upper().split()
 
-    if len(parsed_input) < 2 and parsed_input[0] not in {"INVENTORY", "NEXT", "CONTINUE", "MAP", "SELF"}:
+    if len(parsed_input) < 2 and parsed_input[0] not in {"INVENTORY", "NEXT", "CONTINUE", "MAP", "SELF", "LEAVE"}:
         raise BadInputException()
 
     command = parsed_input[0]
@@ -64,7 +64,7 @@ def input_handler(user_input:str, elements:list, player, map_str:str, map_obj) -
     except:
         raise BadInputException()
 
-    # check allows the player to view enemey stats, doesn't progress the battle
+    # check allows the player to view enemy stats, doesn't progress the battle
     if command == "CHECK":
         if parameter not in range(1, len(elements) + 1):
             raise BadInputException()
@@ -93,7 +93,7 @@ def input_handler(user_input:str, elements:list, player, map_str:str, map_obj) -
         return True
 
     elif command == "ATTACK":
-        # raise exception if player attempts to attack and enemy that doesn't exist
+        # raise exception if player attempts to attack an enemy that doesn't exist
         if parameter not in range(1, len(elements) + 1):
             raise BadInputException()
 
@@ -153,6 +153,8 @@ def input_handler(user_input:str, elements:list, player, map_str:str, map_obj) -
         newline()
         print(player)
         newline()
+
+        return False
 
     # commands that allow for navigating rooms!! 
     elif command in {"NEXT", "CONTINUE"}:
@@ -260,6 +262,45 @@ def input_handler(user_input:str, elements:list, player, map_str:str, map_obj) -
 
         return continue_round
     
+    elif command == "BUY":
+        # raise exception if player attempts to buy an item that doesn't exist
+        if parameter not in range(1, len(elements) + 1):
+            raise BadInputException()
+        
+        newline()
+
+        idx = parameter - 1
+        requested_item = elements[idx]
+        price = requested_item.get_stats()["Price"]
+
+        if price > player.get_gold():
+            print("Not enough money!!\n")
+            return False
+        
+        # removes gold, despite the function name. notice the -1
+        player.add_gold(-1 * price)
+
+        # adds item to player's inventory
+        # removes item from the shop
+        player.add_item_from_str(requested_item.get_name())
+        elements.pop(idx)
+
+        print(f"You bought a(n) {requested_item.get_name()} for ${requested_item.get_stats()["Price"]}!")
+
+        newline()
+
+        # ends the encounter if the player buys everything 
+        if len(elements) == 0:
+            return True
+
+        return False
+    
+    elif command == "LEAVE":
+        newline()
+        print("\"Goodbye, come again!!\"\n")
+
+        return True
+    
     # failsafe
     # raises an exception if this function is called with a command that isn't caught by any of the above cases 
     else:
@@ -309,7 +350,7 @@ def room_handler(room, player, map_str:str, map_obj):
 
                 # if an exception isn't raised, we know the player's input is done! 
                 try:
-                    enemy_turn = input_handler(user_action, enemies, player, map_str, map_obj)
+                    enemy_turn = input_handler(user_action, enemies, player, map_str)
 
                     gathering_input = False
                 except BadInputException as e:
@@ -385,3 +426,35 @@ def room_handler(room, player, map_str:str, map_obj):
             player.add_item_from_str(t.get_name())
 
         newline()
+
+    # player enters the room and they are prompted to see if they wish to buy anything
+    elif room_id == ROOM_TYPES.SHOP:
+        newline()
+
+        print("You enter a shop, and are greeted by the shopkeeper:\n")
+
+        room_loop = True
+        shop_inventory = room.get_encounter().get_elements()
+        
+        while room_loop:
+            print("\"What would you like to buy?\"")
+
+            item_names = [f"${x.get_stats()["Price"]} {x.get_name()}" for x in shop_inventory]
+
+            newline()
+            print(list_to_string(item_names))
+            print(f"You have ${player.get_gold()}.")
+            newline()
+
+            gathering_input = True
+
+            while gathering_input:
+                user_action = input_validation("", VALID_ACTION, lambda a: a.split()[0] in SHOP_COMMS)
+
+                # if an exception isn't raised, we know the player's input is done! 
+                try:
+                    room_loop = not input_handler(user_action, shop_inventory, player, map_str)
+
+                    gathering_input = False
+                except BadInputException as e:
+                    print(e, end="")

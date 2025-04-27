@@ -94,6 +94,8 @@ class Player:
     def add_gold(self, gold:int) -> None:
         self.gold += gold 
 
+    def get_gold(self) -> int:
+        return self.gold
 
     def add_exp(self, exp:int) -> None:
         self.exp_total += exp

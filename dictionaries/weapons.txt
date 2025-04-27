@@ -14,3 +14,11 @@
     attack:6.5
     weapon_type:"special"
 }
+{
+    name:"Dragon Lore AWP"
+    description:"An incredibly high precision and high power sniper rifle."
+    type:"weapon"
+    price:250
+    attack:50
+    weapon_type:"piercing"
+}

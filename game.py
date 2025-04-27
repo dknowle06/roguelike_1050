@@ -21,7 +21,7 @@ import time # used for random seed generation and printing load times
 from common_funcs import *
 from room_handler import *
 
-DEBUG = True
+DEBUG = False
 
 if __name__ == "__main__":
     # used to measure the amount of time it takes to setup the program
@@ -31,10 +31,13 @@ if __name__ == "__main__":
     # if no argument is provided, generate a random seed
     args = sys.argv[1:]
 
+    seed = 0
+
     # if the command line arguments contain a seed, set the seed to that 
     # else, generate a seed using the time and a weird bitwise formula 
     if len(args) > 0:
         mpgt.set_seed(args[0])
+        seed = args[0]
     else:
         # seed generation formula shamelessly stolen from stack overflow
         # https://stackoverflow.com/questions/27276135/python-random-system-time-seed
@@ -119,14 +122,26 @@ if __name__ == "__main__":
         # sets up an array of room objects, this array will contain the next availabe rooms that the player can traverse to
         next_rooms = [x.get_data() for x in dungeon_map.get_node_from_id(player_position).get_children()]
 
-        # gathers input, will end when the user chooses to continue to the next room
-        while gathering_input:
-            print("What do you want to do?")
+        # only allows the player to progress if the player is not at the end of the dungeon
+        if player_position < len(dungeon_map) - 1:
+            # gathers input, will end when the user chooses to continue to the next room
+            while gathering_input:
+                print("What do you want to do?")
 
-            user_input = input_validation("",VALID_ACTION, lambda a: a.split()[0] in NAVIGATION_COMMS)
+                user_input = input_validation("",VALID_ACTION, lambda a: a.split()[0] in NAVIGATION_COMMS)
 
-            gathering_input = not input_handler(user_input, next_rooms, player_obj, mpgt.dungeon_map_to_string(dungeon_map, player_position), dungeon_map)
-            
-        # the second element in `next_rooms` will be updated by `gathering_input`
-        # this element will be a value used to shift the player's position into the room they chose 
-        player_position += next_rooms[1]
+                gathering_input = not input_handler(user_input, next_rooms, player_obj, mpgt.dungeon_map_to_string(dungeon_map, player_position))
+                
+            # the second element in `next_rooms` will be updated by `gathering_input`
+            # this element will be a value used to shift the player's position into the room they chose 
+            player_position += next_rooms[1]
+        else:
+            newline(2)
+
+            output = "Congratulations! You beat the game!\n"
+            output += str(player_obj) + "\n\n"
+            output += f"{player_obj.inventory_as_str()}\n\n"
+            output += f"{mpgt.dungeon_map_to_string(dungeon_map)}\n\n"
+            output += f"\nRun Seed: {seed}"
+
+            print(output)
