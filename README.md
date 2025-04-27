@@ -9,7 +9,7 @@ In order to run the game, run the file `game.py`. There is also an optional comm
 For example:
 `python3 game.py` runs the game, while `python3 game.py 3993251957` runs the game AND sets the random seed to 3993251957.
 
-When running the game, all files posted in the repository are necessary to have, except for `test_dp.py`, `test_mg.py`, and `test_player.py`, as well as any files contained under `dictionaries/testing`. 
+When running the game, all files posted in the repository are necessary to have, except for `test_dp.py`, `test_mg.py`, and `test_player.py`, as well as any files contained under `dictionaries/testing`. All other dictionary `.txt` files must be kept within the `dictionaries` folder.
 
 ## Player Actions
 
