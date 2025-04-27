@@ -34,3 +34,15 @@
     gold_dropped:10
     attacks:"bash"
 }
+{
+    name:"Evilest Witch"
+    descritpion:"The most nefarious witch this room has ever seen!!!!"
+    defense:1.0
+    attack:1.0
+    special_defense:5.0
+    special_attack:25.0
+    hp:20.0
+    exp_dropped:27
+    gold_dropped:14
+    attacks:"bash,curse,heal_spell"
+}

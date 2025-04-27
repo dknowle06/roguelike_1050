@@ -3,6 +3,6 @@
     attack:1.0
     special_defense:1.0
     special_attack:1.0
-    hp:20.0
-    starting_inventory:"rusty dagger,cherry soda"
+    hp:35.0
+    starting_inventory:"rusty dagger,cherry soda,cherry soda"
 }

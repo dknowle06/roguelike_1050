@@ -2,6 +2,7 @@
 David Knowles 
 4/26/2025
 File that stores the main gameloop
+This is the file that should be run if you want to play the game!!!!!!!!!!!!!!!!!
 
 This is like if balatro was a dungeon crawler and also made by someone who doesn't really understand game design but has played way too much balatro
 Game's title is currently 1050 Roguelike, I can't think of anything else better
@@ -111,13 +112,22 @@ if __name__ == "__main__":
     player_position = 0
     gameloop = True
 
+    # assumes the player has died until explicitly told the player has not died
+    player_died = True
+
+    output = ""
+
+
     while gameloop:
         current_room = dungeon_map.get_node_from_id(player_position).get_data()
         room_id = current_room.get_id()
 
-        room_handler(current_room, player_obj, mpgt.dungeon_map_to_string(dungeon_map, player_position), dungeon_map)
+        gameloop = room_handler(current_room, player_obj, mpgt.dungeon_map_to_string(dungeon_map, player_position), dungeon_map)
 
-        # NOTE for me!! seed `123` and `3435534953` and `607007593` and `3313003888` will be good for testing, it seems
+        # exits the game loop if the player is dead
+        if gameloop == False:
+            break
+
         gathering_input = True
         # sets up an array of room objects, this array will contain the next availabe rooms that the player can traverse to
         next_rooms = [x.get_data() for x in dungeon_map.get_node_from_id(player_position).get_children()]
@@ -138,10 +148,32 @@ if __name__ == "__main__":
         else:
             newline(2)
 
-            output = "Congratulations! You beat the game!\n"
+            output += "Congratulations! You beat the game!\n"
             output += str(player_obj) + "\n\n"
-            output += f"{player_obj.inventory_as_str()}\n\n"
+            output += f"Inventory: {player_obj.inventory_as_str()}\n\n"
             output += f"{mpgt.dungeon_map_to_string(dungeon_map)}\n\n"
             output += f"\nRun Seed: {seed}"
 
             print(output)
+
+            gameloop = False
+            player_died = False
+
+    if player_died:
+        newline(2)
+
+        output += "You have died! GG\n\n"
+        output += str(player_obj) + "\n\n"
+        output += f"Inventory: {player_obj.inventory_as_str()}\n\n"
+        output += f"{mpgt.dungeon_map_to_string(dungeon_map)}\n\n"
+        output += f"\nRun Seed: {seed}"
+
+        print(output)
+
+    newline(2)
+    print("Check `game_results.txt` for your end-of-game results!")
+    print("*Note*\n\tThere is currently an issue with how the ascii art for the map gets rendered in the output file. Please ignore that! I'm not exactly sure how to fix it or what the issue is.\n")
+
+    # outputs the game results to a file after the player has beat the game or after the player has died
+    with open("game_results.txt", "w") as f:
+        f.write(output)

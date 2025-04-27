@@ -93,7 +93,9 @@ class Encounter:
 
         if room_type == ROOM_TYPES.FIGHT:
 
-            num_enemies = randint(1,3)
+            # this could originally generate up to 3 enemies, but that would very easily overwhelm the player
+            # so it can now only generate up to 2 enemies
+            num_enemies = randint(1,2)
 
             for i in range(num_enemies):
                 # gross syntax, but just grabs a random element from `Encounter.enemy_data` and copies it 

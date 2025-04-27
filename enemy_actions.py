@@ -4,8 +4,10 @@ David Knowles
 
 Contains functions that return `Enemy_Action` objects
 These objects contain information about stat boosts, healing, damage, etc. 
-
 """
+
+# NOTE! randint is inclusive from a to b
+from random import randint 
 
 # consts that store damage types
 PHYSICAL = 1
@@ -56,17 +58,17 @@ class Enemy_Action:
         output_str = f"{self.enemy_name} {self.attack_verb}!\n"
 
         if self.damage != 0:
-            output_str += f"{self.enemy_name} hit you for {self.damage} {get_damage_type(self.damage_type)} damage." if self.damage > 0 else f"{self.enemy_name} healed you for {-1 * self.damage} hp."
+            output_str += f"{self.enemy_name} hit you for {self.damage:.1f} {get_damage_type(self.damage_type)} damage." if self.damage > 0 else f"{self.enemy_name} healed you for {-1 * self.damage:.1f} hp."
             output_str += "\n"
 
         if self.healing != 0:
-            output_str += f"{self.enemy_name} healed itself for {self.healing} hp." if self.healing > 0 else f"{self.enemy_name} dealt {-1 * self.healing} damage to itself."
+            output_str += f"{self.enemy_name} healed itself for {self.healing:.1f} hp." if self.healing > 0 else f"{self.enemy_name} dealt {-1 * self.healing:.1f} damage to itself."
             output_str += "\n"
 
         return output_str[:-1]
 
     # modifies the damage amount based on enemy and player stats
-    def mod_damage(self, enemy_stats:dict, player_stats:dict) -> None:
+    def mod_damage(self, player_stats:dict) -> None:
 
         # realistically i should be using try/catch here to be safe
         # but if these aren't defined in the dictionaries passed, there is a major issue happening somewhere else
@@ -87,6 +89,12 @@ class Enemy_Action:
 
         elif self.damage_type == SPECIAL:
             self.damage = self.damage / ((player_sp_defense + 100) / 100)
+
+    def get_healing(self) -> float:
+        return self.healing
+    
+    def get_damage(self) -> float:
+        return self.damage
 
 
 
@@ -113,13 +121,24 @@ def sneeze(stats_dict:dict, enemy_name:str):
 def bash_attack(stats_dict:dict, enemy_name:str):
     enemy_attack = stats_dict["Attack"]
 
-    damage = 3 * (enemy_attack + 100) / 100
+    damage = 2.7 * (enemy_attack + 100) / 100
     return Enemy_Action(0, damage, enemy_name, "bashed you", PHYSICAL)
+
+def curse_attack(stats_dict:dict, enemy_name:str):
+    enemy_attack = stats_dict["Special Attack"]
+
+    damage = 2.7 * (enemy_attack + 100) / 100
+    return Enemy_Action(0, damage, enemy_name, "placed a curse on you", SPECIAL)
+
+def heal_spell(stats_dict:dict, enemy_name:str):
+    return Enemy_Action(float(randint(1,5)), 0, enemy_name, "casted a spell to heal itself", SPECIAL)
 
 # FUNCTION DICTIONARY
 ENEMY_ACTIONS_DICT = {
     "flop":flop,
     "cough":cough,
     "sneeze":sneeze,
-    "bash":bash_attack
+    "bash":bash_attack,
+    "curse":curse_attack,
+    "heal_spell":heal_spell
 }

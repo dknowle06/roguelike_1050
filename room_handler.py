@@ -15,6 +15,7 @@ from mapgeneration import *
 from player import Player 
 import copy
 from common_funcs import *
+from enemy_actions import *
 
 
 # exception raised when user's input is invalid
@@ -308,6 +309,15 @@ def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
 
 
 
+
+
+# --------------------------------------------------------------------------------------
+
+
+
+ALIVE = True
+DEAD = False
+
 # room should be a room object 
 # player should be a player object
 def room_handler(room, player, map_str:str, map_obj):
@@ -357,8 +367,28 @@ def room_handler(room, player, map_str:str, map_obj):
                     enemy_turn = False
                     print(e, end="")
 
+            # each enemy will attack the player
             if enemy_turn:
-                print("ENEMY TURN PLACEHOLDER\n")
+                # print("ENEMY TURN PLACEHOLDER\n") # <--- placeholder used for debugging, uncomment if needed.
+
+                for bg in enemies:
+                    atk = bg.attack()(bg.get_stats(), bg.get_name())
+                    atk.mod_damage(player.get_stats())
+
+                    print(atk)
+                    newline()
+
+                    bg.take_damage(-1 * atk.get_healing())
+                    player.take_damage(atk.get_damage())
+
+                print(f"You have {player.get_stat("Hp"):.1f} HP.")
+
+                if player.get_stat("Hp") <= 0:
+                    newline(2)
+
+                    return DEAD
+
+
 
             # if all enemies have been defeated, end the room encounter 
             # add dropped gold and exp to player 
@@ -458,3 +488,6 @@ def room_handler(room, player, map_str:str, map_obj):
                     gathering_input = False
                 except BadInputException as e:
                     print(e, end="")
+
+
+    return ALIVE

@@ -123,3 +123,7 @@ class Player:
 
         item.set_player_ownership(True)
         self.inventory.append(item)
+
+
+    def take_damage(self, dmg:float):
+        self.stats["Hp"] -= dmg

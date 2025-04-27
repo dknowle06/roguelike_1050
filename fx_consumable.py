@@ -33,9 +33,9 @@ CONTINUE_TURN = False
 
 # used by cherry soda
 def heal_cs(player, enemies:list) -> bool:
-    player.get_stats()["Hp"] += 10.0
+    player.get_stats()["Hp"] += 15.0
 
-    print("Healed 10.0 HP!")
+    print("Healed 15.0 HP!")
 
     return END_TURN
 
@@ -65,7 +65,7 @@ def explode_c4(player, enemies:list) -> bool:
     for i in range(len(enemies)):
         # DRY? I don't even know her!
         enemies[i].take_damage(20)
-        print(f"You dealt 20 piercing damage to {enemies[i].get_name()} [{i + 1}]!")
+        print(f"You dealt 20.0 piercing damage to {enemies[i].get_name()} [{i + 1}]!")
 
     newline()
 
@@ -83,7 +83,9 @@ def explode_c4(player, enemies:list) -> bool:
     for i in range(len(defeated_enemy_indexes) - 1, -1, -1):
         enemies.pop(i)
 
-    # TODO: Player self-damage. Will be added when i add a method for the player to take damage in the player class 
+    print("You took 5.0 damage!")
+    player.take_damage(5.0)
+    
 
     return END_TURN
 
