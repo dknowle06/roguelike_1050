@@ -16,17 +16,6 @@ from player import Player
 import copy
 from common_funcs import *
 
-"""
-Stores the path the player is on
-
-Current Path values:
-0 = not on a split path, bottom path if 2-way or 3-way
-1 = top if 2-way, middle if 3-way
-2 = top if 3-way
-"""
-current_path = 0
-num_split_path_rooms = 0
-
 
 # exception raised when user's input is invalid
 # there isn't much functionally different between this and the exception superclass 
@@ -41,14 +30,24 @@ class BadInputException(Exception):
         return f"{self.msg}"
 
 
+on_split_path = False
+adjuster = 0
+num_split_rooms = 0
+
+
 # NOTE: Sets used to check for validity of player commands found in `common_funcs.py`
 
 # function used to handle input, called by `room_handler`
 # returns a boolean value to let the program know if the turn is over, in the event of being in a battle
 # player should be a player object 
 def input_handler(user_input:str, elements:list, player, map_str:str, map_obj) -> bool:
-    global current_path
-    global num_split_path_rooms
+    # globals ):
+    # needed to fix a bug with room navigation when it comes to exiting split paths 
+    global on_split_path
+    global adjuster
+    global num_split_rooms
+
+
     # parses user input into a list
     # first element should be the command
     # second element should be the command parameter 
@@ -162,9 +161,6 @@ def input_handler(user_input:str, elements:list, player, map_str:str, map_obj) -
 
             elements.append(1)
 
-            if current_path == 0:
-                num_split_path_rooms = 0
-
         elif len(elements) == 2:
             print("\nYou come across two doors, which one will you enter?\n\t[1] [2]")
 
@@ -184,7 +180,10 @@ def input_handler(user_input:str, elements:list, player, map_str:str, map_obj) -
             # add an id shifter
             elements.append(1 if room_num == 1 else 3)
 
-            current_path = 0 if room_num == 2 else 1
+            if room_num == 1:
+                on_split_path = True
+                num_split_rooms = 0
+                adjuster = 2
 
         elif len(elements) == 3:
             print("\nYou come across three doors, which one will you enter?\n\t[1] [2] [3]")
@@ -204,19 +203,24 @@ def input_handler(user_input:str, elements:list, player, map_str:str, map_obj) -
             # add an id shifter
             elements.append(1 if room_num == 1 else 3 if room_num == 2 else 5)
 
-            current_path = 0 if room_num == 3 else 1 if room_num == 2 else 2
+            if room_num == 1:
+                on_split_path = True
+                num_split_rooms = 0
+                adjuster = 4
+            elif room_num == 2:
+                on_split_path = True
+                num_split_rooms = 0
+                adjuster = 2
 
-        if num_split_path_rooms == 2:
-            elements[1] += 2 * current_path
-            current_path = 0
+        if on_split_path:
+            num_split_rooms += 1
 
-        if num_split_path_rooms == 1 or (len(elements) > 1 and num_split_path_rooms < 2):
-            num_split_path_rooms += 1
-
-        if num_split_path_rooms == 0 and current_path != 0:
-            num_split_path_rooms = 1
-
-        print(f"current_path = {current_path}\nnum_split_path_rooms = {num_split_path_rooms}\n")
+        # really hacky bug fix that properly modifies the returned player movement id for when the player exits a split path
+        if num_split_rooms == 3:
+            elements[1] += adjuster
+            on_split_path = False
+            num_split_rooms = 0
+            adjuster = 0
 
         return True
     
