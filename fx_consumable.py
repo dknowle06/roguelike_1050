@@ -90,11 +90,32 @@ def explode_c4(player, enemies:list) -> bool:
     return END_TURN
 
 
+def root_beer(player, enemies:list) -> bool:
+    player.get_stats()["Hp"] += 7.5
+    player.get_stats()["Defense"] += 2.0
+
+    print("Healed 7.5 HP!")
+    print("Permanently boosted Defense by 2.0!")
+
+    return END_TURN
+
+def birch_beer(player, enemies:list) -> bool:
+    player.get_stats()["Hp"] += 7.5
+    player.get_stats()["Special Defense"] += 2.0
+
+    print("Healed 7.5 HP!")
+    print("Permanently boosted Special Defense by 2.0!")
+
+    return END_TURN
+
+
 
 
 # used to assign functions to consumables
 CONSUMABLE_FX_DICT = {
     "heal_cs":heal_cs,
     "gros_michel":gros_michel,
-    "explode_c4":explode_c4
+    "explode_c4":explode_c4,
+    "root_beer":root_beer,
+    "birch_beer":birch_beer
 }

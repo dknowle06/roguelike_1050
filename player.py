@@ -108,9 +108,9 @@ class Player:
         if num_levels_gained > 0:
             print(f"You gained {num_levels_gained} level(s)!")
 
-            # adds 5 HP for each level gained
-            self.stats["Hp"] += num_levels_gained * 5.0
-            print(f"You gained {num_levels_gained * 5.0:.1f} HP!")
+            # adds 10 HP for each level gained
+            self.stats["Hp"] += num_levels_gained * 10
+            print(f"You gained {num_levels_gained * 10:.1f} HP!")
 
             # add 2 to all other stats for each level gained 
             stat_adjuster = num_levels_gained * 2.0

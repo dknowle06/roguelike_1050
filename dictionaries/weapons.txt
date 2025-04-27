@@ -10,7 +10,7 @@
     name:"Old Wand"
     description:"An old wooden wand. Holding it, you can feel its power. And splinters."
     type:"weapon"
-    price:10
+    price:8
     attack:6.5
     weapon_type:"special"
 }
@@ -21,4 +21,20 @@
     price:250
     attack:50
     weapon_type:"piercing"
+}
+{
+    name:"Master's Sword"
+    description:"An incredibly powerful sword with a blue handle."
+    type:"weapon"
+    price:15
+    attack:25.0
+    weapon_type:"physical"
+}
+{
+    name:"All-Powerful Staff"
+    description:"A long wooden staff that stares the enemy down as you attack them."
+    type:"weapon"
+    price:17
+    attack:27.5
+    weapon_type:"special"
 }

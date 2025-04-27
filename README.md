@@ -63,6 +63,6 @@ The scope of this project is something I've never actually done before, so I do 
 
 I started working on this sometime in late March, and the first playable build was finished 4/26/2025.
 
-I wasn't able to do as much play-testing as I wanted to, so if you come across any bugs, please let me know at dknowle@clemson.edu. 
+I wasn't able to do as much play-testing as I wanted to, so if you come across any bugs, please let me know at dknowle@clemson.edu. To my knowledge, the program runs relatively smoothly, so there shouldn't be any errors encountered.
 
 If you want to mod an enemy or item into the game, add an entry to the corresponding `.txt` file in `dictionaries`. If you want to add custom functionality to the modded item or enemy, add the functionality in `fx_consumable.py` or `enemy_actions.py` and update the dictionaries in said files. 
