@@ -1,0 +1,19 @@
+You have died! GG
+
+You are Adventurer.
+You are level 2 and have 10 experience points.
+You currently have a(n) Rusty Dagger equipped.
+You have 30 gold.
+You have -5.8 HP remaining.
+You have 3.0 Attack, 3.0 Special Attack, 3.0 Defense, and 3.0 Special Defense.
+
+Inventory: [1] Rusty Dagger
+
+/-----------------------------------------------\
+|                   / F - F \      / M - F \    |
+| F - F - F - X - F          F - F - F - M - B  |
+|                   \ $ - H /      \ $ - X /    |
+\-----------------------------------------------/
+
+
+Run Seed: 3219531390

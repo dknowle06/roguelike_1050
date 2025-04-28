@@ -1,6 +1,6 @@
 """
 David Knowles
-4/26/2025
+4/28/2025
 
 Contains functions and classes used for generating maps and storing rooms 
 Stores the Encounter and the Room class 
@@ -95,7 +95,8 @@ class Encounter:
 
             # this could originally generate up to 3 enemies, but that would very easily overwhelm the player
             # so it can now only generate up to 2 enemies
-            num_enemies = randint(1,2)
+            # i kind of realized how messed up the balance of my game is, so i changed it back to 3 so it could be a bit harder
+            num_enemies = randint(1,3)
 
             for i in range(num_enemies):
                 # gross syntax, but just grabs a random element from `Encounter.enemy_data` and copies it 
@@ -333,12 +334,12 @@ PLAYER_HERE = 2025
 # dictionary used when printing a dungeon map
 # converts dungeon ids to relevant symbols 
 ID_TO_SYMBOL = {
-    ROOM_TYPES.FIGHT: "🗡",
-    ROOM_TYPES.BOSS: "♛",
-    ROOM_TYPES.MINIBOSS: "⚠",
-    ROOM_TYPES.TREASURE: "✗",
+    ROOM_TYPES.FIGHT: "F",
+    ROOM_TYPES.BOSS: "B",
+    ROOM_TYPES.MINIBOSS: "M",
+    ROOM_TYPES.TREASURE: "X",
     ROOM_TYPES.SHOP: "$",
-    ROOM_TYPES.FOUNTAIN: "♡",
+    ROOM_TYPES.FOUNTAIN: "H",
     PLAYER_HERE: "O"
 }
 

@@ -1,6 +1,6 @@
 """
 David Knowles
-4/26/2025
+4/28/2025
 
 contains actions for consumable items
 """
@@ -33,9 +33,11 @@ CONTINUE_TURN = False
 
 # used by cherry soda
 def heal_cs(player, enemies:list) -> bool:
-    player.get_stats()["Hp"] += 15.0
+    extra_hp = float(randint(0,5))
 
-    print("Healed 15.0 HP!")
+    player.get_stats()["Hp"] += 17.0 + extra_hp
+
+    print(f"Healed {17.0 + extra_hp:.1f} HP!")
 
     return END_TURN
 
@@ -90,6 +92,7 @@ def explode_c4(player, enemies:list) -> bool:
     return END_TURN
 
 
+# used by root beer
 def root_beer(player, enemies:list) -> bool:
     player.get_stats()["Hp"] += 7.5
     player.get_stats()["Defense"] += 2.0
@@ -99,6 +102,7 @@ def root_beer(player, enemies:list) -> bool:
 
     return END_TURN
 
+# used by birch beer
 def birch_beer(player, enemies:list) -> bool:
     player.get_stats()["Hp"] += 7.5
     player.get_stats()["Special Defense"] += 2.0
@@ -107,6 +111,7 @@ def birch_beer(player, enemies:list) -> bool:
     print("Permanently boosted Special Defense by 2.0!")
 
     return END_TURN
+
 
 
 

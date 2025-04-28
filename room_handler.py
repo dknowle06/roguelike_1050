@@ -1,5 +1,5 @@
 """
-4/26/2025
+4/28/2025
 David Knowles
 
 File that handles room actions
@@ -16,6 +16,8 @@ from player import Player
 import copy
 from common_funcs import *
 from enemy_actions import *
+# NOTE! randint is inclusive from a to b
+from random import randint 
 
 
 # exception raised when user's input is invalid
@@ -113,6 +115,12 @@ def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
         # gather weapon stats
         weapon_attack = player.equipped_weapon.get_stat("Attack")
         weapon_type = player.equipped_weapon.get_stat("Weapon Type")
+
+        # boosts player damage by a random amount (between 0 and 2.5, in increments of 0.5)
+        # helps to make the battles feel a little more dynamic
+        damage_randomness_modifier = float(randint(0,5)) / 2
+        player_attack += damage_randomness_modifier
+        player_sp_attack += damage_randomness_modifier
 
         # calculate damage amount 
         damage = 0
@@ -292,12 +300,15 @@ def input_handler(user_input:str, elements:list, player, map_str:str) -> bool:
 
         # ends the encounter if the player buys everything 
         if len(elements) == 0:
+            newline()
+            print("\"Goodbye, come again!!\"\n")
+
             return True
 
         return False
     
     elif command == "LEAVE":
-        newline()
+        print("You bought everything! Leaving the shop...")
         print("\"Goodbye, come again!!\"\n")
 
         return True

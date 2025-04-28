@@ -1,6 +1,6 @@
 """
 David Knowles 
-4/26/2025
+4/28/2025
 File that stores the main gameloop
 This is the file that should be run if you want to play the game!!!!!!!!!!!!!!!!!
 
@@ -171,8 +171,7 @@ if __name__ == "__main__":
         print(output)
 
     newline(2)
-    print("Check `game_results.txt` for your end-of-game results!")
-    print("*Note*\n\tThere is currently an issue with how the ascii art for the map gets rendered in the output file. Please ignore that! I'm not exactly sure how to fix it or what the issue is.\n")
+    print("Check `game_results.txt` for your end-of-game results!\n")
 
     # outputs the game results to a file after the player has beat the game or after the player has died
     with open("game_results.txt", "w") as f:
